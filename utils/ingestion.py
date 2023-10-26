@@ -5,7 +5,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone as pinecone_store
 import pinecone
 
-#
+##
 
 pinecone.init(api_key=os.environ["PINECODE_API_KEY"], environment="gcp-starter")
 
