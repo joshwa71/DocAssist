@@ -1,0 +1,454 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.func >
+  * torch.func API Reference >
+  * torch.func.jacrev
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.func.jacrev¶
+
+torch.func.jacrev( _func_ , _argnums =0_, _*_ , _has_aux =False_, _chunk_size
+=None_, __preallocate_and_copy =False_)¶
+
+    
+
+Computes the Jacobian of `func` with respect to the arg(s) at index `argnum`
+using reverse mode autodiff
+
+Note
+
+Using `chunk_size=1` is equivalent to computing the jacobian row-by-row with a
+for-loop i.e. the constraints of `vmap()` are not applicable.
+
+Parameters
+
+    
+
+  * **func** ( _function_ ) – A Python function that takes one or more arguments, one of which must be a Tensor, and returns one or more Tensors
+
+  * **argnums** ( _int_ _or_ _Tuple_ _[_ _int_ _]_ ) – Optional, integer or tuple of integers, saying which arguments to get the Jacobian with respect to. Default: 0.
+
+  * **has_aux** ( _bool_) – Flag indicating that `func` returns a `(output, aux)` tuple where the first element is the output of the function to be differentiated and the second element is auxiliary objects that will not be differentiated. Default: False.
+
+  * **chunk_size** ( _None_ _or_ _int_) – If None (default), use the maximum chunk size (equivalent to doing a single vmap over vjp to compute the jacobian). If 1, then compute the jacobian row-by-row with a for-loop. If not None, then compute the jacobian `chunk_size` rows at a time (equivalent to doing multiple vmap over vjp). If you run into memory issues computing the jacobian, please try to specify a non-None chunk_size.
+
+Returns
+
+    
+
+Returns a function that takes in the same inputs as `func` and returns the
+Jacobian of `func` with respect to the arg(s) at `argnums`. If `has_aux is
+True`, then the returned function instead returns a `(jacobian, aux)` tuple
+where `jacobian` is the Jacobian and `aux` is auxiliary objects returned by
+`func`.
+
+A basic usage with a pointwise, unary operation will give a diagonal array as
+the Jacobian
+
+    
+    
+    >>> from torch.func import jacrev
+    >>> x = torch.randn(5)
+    >>> jacobian = jacrev(torch.sin)(x)
+    >>> expected = torch.diag(torch.cos(x))
+    >>> assert torch.allclose(jacobian, expected)
+    
+
+If you would like to compute the output of the function as well as the
+jacobian of the function, use the `has_aux` flag to return the output as an
+auxiliary object:
+
+    
+    
+    >>> from torch.func import jacrev
+    >>> x = torch.randn(5)
+    >>>
+    >>> def f(x):
+    >>>   return x.sin()
+    >>>
+    >>> def g(x):
+    >>>   result = f(x)
+    >>>   return result, result
+    >>>
+    >>> jacobian_f, f_x = jacrev(g, has_aux=True)(x)
+    >>> assert torch.allclose(f_x, f(x))
+    
+
+`jacrev()` can be composed with vmap to produce batched Jacobians:
+
+    
+    
+    >>> from torch.func import jacrev, vmap
+    >>> x = torch.randn(64, 5)
+    >>> jacobian = vmap(jacrev(torch.sin))(x)
+    >>> assert jacobian.shape == (64, 5, 5)
+    
+
+Additionally, `jacrev()` can be composed with itself to produce Hessians
+
+    
+    
+    >>> from torch.func import jacrev
+    >>> def f(x):
+    >>>   return x.sin().sum()
+    >>>
+    >>> x = torch.randn(5)
+    >>> hessian = jacrev(jacrev(f))(x)
+    >>> assert torch.allclose(hessian, torch.diag(-x.sin()))
+    
+
+By default, `jacrev()` computes the Jacobian with respect to the first input.
+However, it can compute the Jacboian with respect to a different argument by
+using `argnums`:
+
+    
+    
+    >>> from torch.func import jacrev
+    >>> def f(x, y):
+    >>>   return x + y ** 2
+    >>>
+    >>> x, y = torch.randn(5), torch.randn(5)
+    >>> jacobian = jacrev(f, argnums=1)(x, y)
+    >>> expected = torch.diag(2 * y)
+    >>> assert torch.allclose(jacobian, expected)
+    
+
+Additionally, passing a tuple to `argnums` will compute the Jacobian with
+respect to multiple arguments
+
+    
+    
+    >>> from torch.func import jacrev
+    >>> def f(x, y):
+    >>>   return x + y ** 2
+    >>>
+    >>> x, y = torch.randn(5), torch.randn(5)
+    >>> jacobian = jacrev(f, argnums=(0, 1))(x, y)
+    >>> expectedX = torch.diag(torch.ones_like(x))
+    >>> expectedY = torch.diag(2 * y)
+    >>> assert torch.allclose(jacobian[0], expectedX)
+    >>> assert torch.allclose(jacobian[1], expectedY)
+    
+
+Note
+
+Using PyTorch `torch.no_grad` together with `jacrev`. Case 1: Using
+`torch.no_grad` inside a function:
+
+    
+    
+    >>> def f(x):
+    >>>     with torch.no_grad():
+    >>>         c = x ** 2
+    >>>     return x - c
+    
+
+In this case, `jacrev(f)(x)` will respect the inner `torch.no_grad`.
+
+Case 2: Using `jacrev` inside `torch.no_grad` context manager:
+
+    
+    
+    >>> with torch.no_grad():
+    >>>     jacrev(f)(x)
+    
+
+In this case, `jacrev` will respect the inner `torch.no_grad`, but not the
+outer one. This is because `jacrev` is a “function transform”: its result
+should not depend on the result of a context manager outside of `f`.
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.func.jacrev
+    * `jacrev()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

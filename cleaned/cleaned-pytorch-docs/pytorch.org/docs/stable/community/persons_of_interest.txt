@@ -1,0 +1,795 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * PyTorch Governance | Maintainers
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# PyTorch Governance | Maintainers¶
+
+## Responsibilities¶
+
+  * Triage and fix high priority issues assigned to the module or library
+
+  * Triage, review, and land high priority pull requests assigned to the module or library
+
+  * Answer module or library questions on discuss.pytorch.org and dev-discuss.pytorch.org
+
+  * Maintain public user and development documentation
+
+  * Run meetings and share minutes plus roadmap on a half or quarterly basis
+
+## Lead Core Maintainer (BDFL)¶
+
+  * Soumith Chintala (soumith)
+
+## Core Maintainers¶
+
+  * Soumith Chintala (soumith)
+
+  * Edward Yang (ezyang)
+
+  * Greg Chanan (gchanan)
+
+  * Dmytro Dzhulgakov (dzhulgakov)
+
+  * Nikita Shulga (malfet)
+
+## Module-level maintainers¶
+
+### NN APIs (torch.nn)¶
+
+  * Greg Chanan (gchanan)
+
+  * Soumith Chintala (soumith)
+
+  * Joel Schlosser (jbschlosser)
+
+  * Alban Desmaison (albanD)
+
+  * (emeritus) Sam Gross (colesbury)
+
+  * (emeritus) Adam Paszke (apaszke)
+
+### Optimizers (torch.optim)¶
+
+  * Alban Desmaison (albanD)
+
+  * Joel Schlosser (jbschlosser)
+
+  * Soumith Chintala (soumith)
+
+  * (emeritus) Ilqar Ramazanli (iramazanli)
+
+  * (emeritus) Vincent Quenneville-Belair (vincentqb)
+
+### Autograd (torch.autograd)¶
+
+  * Edward Yang (ezyang)
+
+  * Alban Desmaison (alband)
+
+  * Jeffrey Wan (soulitzer)
+
+  * (emeritus) Adam Paszke (apaszke)
+
+### Compilers (JIT / TorchScript / FX / TorchDynamo)¶
+
+  * Elias Ellison (eellison)
+
+  * Michael Suo (suo)
+
+  * Yanan Cao (gmagogsfm)
+
+  * James Reed (jamesr66a)
+
+  * Jason Ansel (jansel)
+
+  * Jiong Gong (jgong5)
+
+  * (emeritus) Zach Devito (zdevito)
+
+### Distributions & RNG¶
+
+  * Fritz Obermeyer (fritzo)
+
+  * Neeraj Pradhan (neerajprad)
+
+  * Alican Bozkurt (alicanb)
+
+  * (emeritus) Vishwak Srinivasan (vishwakftw)
+
+### Distributed¶
+
+  * Shen Li (mrshenli)
+
+  * Pritam Damania (pritamdamania87)
+
+  * Yanli Zhao (zhaojuanmao)
+
+  * Rohan Varma (rohan-varma)
+
+  * Wanchao Liang (wanchaol)
+
+  * Junjie Wang (fduwjj)
+
+  * Howard Huang (H-Huang)
+
+  * Tristan Rice (d4l3k)
+
+  * Alisson Azzolini (aazzolini)
+
+  * Ke Wen (kwen2501)
+
+  * James Reed (jamesr66a)
+
+  * Kiuk Chung (kiukchung)
+
+  * (emeritus) Pieter Noordhuis (pietern)
+
+  * (emeritus) Mingzhe Li (mingzhe09088)
+
+  * (emeritus) Omkar Salpekar (osalpekar)
+
+### Multiprocessing and DataLoaders¶
+
+  * Simon Wang (SsnL)
+
+  * (emeritus) Vitaly Fedyunin (VitalyFedyunin)
+
+  * (emeritus) Adam Paszke (apaszke)
+
+### Linear Algebra (torch.linalg)¶
+
+  * Mike Ruberry (mruberry)
+
+  * Mario Lezcano (lezcano)
+
+  * Ivan Yashchuk (IvanYashchuk)
+
+  * (emeritus) Vishwak Srinivasan (vishwakftw)
+
+### Sparse (torch.sparse)¶
+
+  * Pearu Peterson (pearu)
+
+  * Nikita Vedeneev (nikitaved)
+
+  * Ivan Yashchuk (IvanYashchuk)
+
+  * Christian Puhrsch (cpuhrsch)
+
+  * Andrew James (amjames)
+
+### NestedTensor (torch.nested)¶
+
+  * Alban Desmaison (albanD)
+
+  * Christian Puhrsch (cpuhrsch)
+
+  * Driss Guessous (drisspg)
+
+  * Joel Schlosser (jbschlosser)
+
+  * Mikayla Gawarecki (mikaylagawarecki)
+
+  * Natalia Gimelshein (ngimel)
+
+### MaskedTensor (torch.masked)¶
+
+  * Christian Puhrsch (cpuhrsch)
+
+  * (emeritus) George Qi (george-qi)
+
+### Fast Fourier Transform (torch.fft)¶
+
+  * Mike Ruberry (mruberry)
+
+  * Peter Bell (peterbell10)
+
+### CPU Performance (Torch Inductor / MKLDNN)¶
+
+  * Mingfei Ma (mingfeima)
+
+  * Jiong Gong (jgong5)
+
+  * Xiaobing Zhang (XiaobingSuper)
+
+  * (emeritus) Xiaoqiang Zheng (zheng-xq)
+
+  * (emeritus) Sam Gross (colesbury)
+
+  * (emeritus) Christian Puhrsch (cpuhrsch)
+
+  * (emeritus) Ilia Cherniavskii (ilia-cher)
+
+  * (emeritus) Junjie Bai (bddppq)
+
+  * (emeritus) Yinghai Lu (yinghai)
+
+  * (emeritus) Vitaly Fedyunin (VitalyFedyunin)
+
+  * (emeritus) Jianhui Li (Jianhui-Li)
+
+### GPU Performance (Torch Inductor / Triton / CUDA)¶
+
+  * Natalia Gimelshein (ngimel)
+
+  * Edward Yang (ezyang)
+
+  * Piotr Bialecki (ptrblck)
+
+  * Christian Sarofeen (csarofeen)
+
+  * Andrew Tulloch (ajtulloch)
+
+  * (emeritus) Xiaoqiang Zheng (zheng-xq)
+
+### NVFuser¶
+
+  * Christian Sarofeen (csarofeen)
+
+  * Alex Jann (jjsjann123)
+
+  * Piotr Bialecki (ptrblck)
+
+  * Natalia Gimelshein (ngimel)
+
+### AMD/ROCm/HIP¶
+
+  * Peng Sun (sunway513)
+
+  * Jithun Nair (jithunnair-amd)
+
+  * Jeff Daily (jeffdaily)
+
+  * (emeritus) Junjie Bai (bddppq)
+
+### Build + CI¶
+
+  * Nikita Shulga (malfet)
+
+  * Eli Uriegas (seemethere)
+
+  * Alban Desmaison (alband)
+
+  * Mikey Dagitses (dagitses)
+
+  * Omkar Salpekar (osalpekar)
+
+  * Zain Rizvi (ZainRizvi)
+
+  * Nirav Mehta (mehtanirav)
+
+  * Andrey Talman (atalman)
+
+  * (emeritus) Zhuojie Zhou (zhouzhuojie)
+
+  * (emeritus) Edward Yang (ezyang)
+
+  * (emeritus) Karl Ostmo (kostmo)
+
+### Performance Tools¶
+
+  * Adnan Aziz (adnanaziz)
+
+  * CK Luk (ckluk)
+
+  * Taylor Robie (robieta)
+
+  * Xu Zhao (xuzhao9)
+
+  * Geeta Chauhan (chauhang)
+
+  * (emeritus) Victor Bittorf (bitfort)
+
+  * (emeritus) Gisle Dankel (gdankel)
+
+  * (emeritus) Natalia Gimelshein (ngimel)
+
+  * (emeritus) Mingzhe Li (mingzhe09088)
+
+### C++ API¶
+
+  * Joel Schlosser (jbschlosser)
+
+  * (emeritus) Will Feng (yf225)
+
+### C10 utils and operator dispatch¶
+
+  * Brian Hirsh (bdhirsh)
+
+  * Edward Yang (ezyang)
+
+  * Dmytro Dzhulgakov (dzhulgakov)
+
+  * (emeritus) Sebastian Messmer (smessmer)
+
+### ONNX exporter¶
+
+  * Bowen Bao (BowenBao)
+
+  * Aaron Bockover (abock)
+
+  * (emeritus) Gary Miguel (garymm)
+
+  * (emeritus) Lara Haidar (lara-hdr)
+
+  * (emeritus) Lu Fang (houseroad)
+
+  * (emeritus) Negin Raoof (neginraoof)
+
+  * (emeritus) Spandan Tiwari (spandantiwari)
+
+### Mobile / Edge¶
+
+  * David Reiss (dreiss)
+
+  * Raziel Guevara (raziel)
+
+  * Linbin Yu (linbinyu)
+
+  * Ivan Kobzarev (IvanKobzarev)
+
+  * Tao Xu (xta0)
+
+### Model Compression & Optimization¶
+
+  * Vasiliy Kuznetsov (vkuzo)
+
+  * Jerry Zhang (jerryzh168)
+
+  * Supriya Rao (supriyar)
+
+  * (emeritus) Zafar Takhirov (z-a-f)
+
+  * (emeritus) Raghuraman Krishnamoorthi (raghuramank100)
+
+### Windows¶
+
+  * Guoliang Hua (nbcsm)
+
+  * (emeritus) Teng Gao (gaoteng-git)
+
+  * (emeritus) Peter Johnson (peterjc123)
+
+### Apple M1/MPS¶
+
+  * Alban Desmaison (alband)
+
+  * Nikita Shulga (malfet)
+
+  * Kulin Seth (kulinseth)
+
+  * Ramin Azarmehr (razarmehr)
+
+### PowerPC¶
+
+  * Alfredo Mendoza (avmgithub)
+
+### Docs / Tutorials¶
+
+  * Svetlana Karslioglu (svekars)
+
+## Library-level maintainers¶
+
+### XLA¶
+
+  * Jack Cao (JackCaoG)
+
+  * Daniel Sohn (jysohn23)
+
+  * Zach Cain (zcain117)
+
+  * Brian Hirsch (bdhirsh)
+
+  * Gregory Chanan (gchanan)
+
+  * (emeritus) Ailing Zhang (ailzhang)
+
+  * (emeritus) Davide Libenzi (dlibenzi)
+
+  * (emeritus) Alex Suhan (asuhan)
+
+### TorchServe¶
+
+  * Geeta Chauhan (chauhang)
+
+  * Manoj Rao (mycpuorg)
+
+  * Vamshi Dantu (vdantu)
+
+  * Dhanasekar Karuppasamy (dhanainme)
+
+### TorchVision¶
+
+  * Francisco Massa (fmassa)
+
+  * Vasilis Vryniotis (datumbox)
+
+  * Nicolas Hug (NicolasHug)
+
+  * Yosua Michael Maranatha (YosuaMichael)
+
+  * Joao Gomes (jdsgomes)
+
+  * Philip Meier (pmeier)
+
+  * Victor Fomin (vfdev-5)
+
+### TorchText¶
+
+  * Nayef Ahmed (Nayef211)
+
+  * (emeritus) Parmeet Singh Bhatia (parmeet)
+
+  * (emeritus) Guanheng George Zhang (zhangguanheng66)
+
+  * (emeritus) Christian Puhrsch (cpuhrsch)
+
+### TorchAudio¶
+
+  * Moto Hira (mthrok)
+
+  * Jeff Hwang (hwangjeff)
+
+  * (emeritus) Caroline Chen (carolineechen)
+
+  * (emeritus) Xiaohui Zhang (xiaohui-zhang)
+
+  * (emeritus) Zhaoheng Ni (nateanl)
+
+  * (emeritus) Christian Puhrsch (cpuhrsch)
+
+  * (emeritus) Vincent QB (vincentqb)
+
+### TorchRec¶
+
+  * Dmytro Ivchenko (divchenko)
+
+  * Colin Taylor (colin2328)
+
+### TorchX¶
+
+  * Tristan Rice (d4l3k)
+
+  * Kiuk Chung (kiukchung)
+
+### TorchData / TorchArrow¶
+
+  * Wenlei Xie (wenleix)
+
+  * (emeritus) Vitaly Fedyunin (VitalyFedyunin)
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * PyTorch Governance | Maintainers
+    * Responsibilities
+    * Lead Core Maintainer (BDFL)
+    * Core Maintainers
+    * Module-level maintainers
+      * NN APIs (torch.nn)
+      * Optimizers (torch.optim)
+      * Autograd (torch.autograd)
+      * Compilers (JIT / TorchScript / FX / TorchDynamo)
+      * Distributions & RNG
+      * Distributed
+      * Multiprocessing and DataLoaders
+      * Linear Algebra (torch.linalg)
+      * Sparse (torch.sparse)
+      * NestedTensor (torch.nested)
+      * MaskedTensor (torch.masked)
+      * Fast Fourier Transform (torch.fft)
+      * CPU Performance (Torch Inductor / MKLDNN)
+      * GPU Performance (Torch Inductor / Triton / CUDA)
+      * NVFuser
+      * AMD/ROCm/HIP
+      * Build + CI
+      * Performance Tools
+      * C++ API
+      * C10 utils and operator dispatch
+      * ONNX exporter
+      * Mobile / Edge
+      * Model Compression & Optimization
+      * Windows
+      * Apple M1/MPS
+      * PowerPC
+      * Docs / Tutorials
+    * Library-level maintainers
+      * XLA
+      * TorchServe
+      * TorchVision
+      * TorchText
+      * TorchAudio
+      * TorchRec
+      * TorchX
+      * TorchData / TorchArrow
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

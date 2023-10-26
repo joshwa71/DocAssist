@@ -1,0 +1,370 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.var_mean
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.var_mean¶
+
+torch.var_mean( _input_ , _dim =None_, _*_ , _correction =1_, _keepdim
+=False_, _out =None_)¶
+
+    
+
+Calculates the variance and mean over the dimensions specified by `dim`. `dim`
+can be a single dimension, list of dimensions, or `None` to reduce over all
+dimensions.
+
+The variance (σ2\sigma^2σ2) is calculated as
+
+σ2=1max⁡(0, N−δN)∑i=0N−1(xi−xˉ)2\sigma^2 = \frac{1}{\max(0,~N - \delta
+N)}\sum_{i=0}^{N-1}(x_i-\bar{x})^2 σ2=max(0, N−δN)1​i=0∑N−1​(xi​−xˉ)2
+
+where xxx is the sample set of elements, xˉ\bar{x}xˉ is the sample mean, NNN
+is the number of samples and δN\delta NδN is the `correction`.
+
+If `keepdim` is `True`, the output tensor is of the same size as `input`
+except in the dimension(s) `dim` where it is of size 1. Otherwise, `dim` is
+squeezed (see `torch.squeeze()`), resulting in the output tensor having 1 (or
+`len(dim)`) fewer dimension(s).
+
+Parameters
+
+    
+
+  * **input** ( _Tensor_) – the input tensor.
+
+  * **dim** ( _int_ _or_ _tuple_ _of_ _ints_ _,_ _optional_ ) – the dimension or dimensions to reduce. If `None`, all dimensions are reduced.
+
+Keyword Arguments
+
+    
+
+  * **correction** ( _int_) – 
+
+difference between the sample size and sample degrees of freedom. Defaults to
+Bessel’s correction, `correction=1`.
+
+Changed in version 2.0: Previously this argument was called `unbiased` and was
+a boolean with `True` corresponding to `correction=1` and `False` being
+`correction=0`.
+
+  * **keepdim** ( _bool_) – whether the output tensor has `dim` retained or not.
+
+  * **out** ( _Tensor_ _,_ _optional_ ) – the output tensor.
+
+Returns
+
+    
+
+A tuple (var, mean) containing the variance and mean.
+
+Example
+
+    
+    
+    >>> a = torch.tensor(
+    ...     [[ 0.2035,  1.2959,  1.8101, -0.4644],
+    ...      [ 1.5027, -0.3270,  0.5905,  0.6538],
+    ...      [-1.5745,  1.3330, -0.5596, -0.6548],
+    ...      [ 0.1264, -0.5080,  1.6420,  0.1992]])
+    >>> torch.var_mean(a, dim=0, keepdim=True)
+    (tensor([[1.5926, 1.0056, 1.2005, 0.3646]]),
+     tensor([[ 0.0645,  0.4485,  0.8707, -0.0665]]))
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.var_mean
+    * `var_mean()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

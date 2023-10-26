@@ -1,0 +1,425 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.histogramdd
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.histogramdd¶
+
+torch.histogramdd( _input_ , _bins_ , _*_ , _range=None_ , _weight=None_ ,
+_density=False_ , _out=None) -> (Tensor_, _Tensor[]_ )¶
+
+    
+
+Computes a multi-dimensional histogram of the values in a tensor.
+
+Interprets the elements of an input tensor whose innermost dimension has size
+N as a collection of N-dimensional points. Maps each of the points into a set
+of N-dimensional bins and returns the number of points (or total weight) in
+each bin.
+
+`input` must be a tensor with at least 2 dimensions. If input has shape (M,
+N), each of its M rows defines a point in N-dimensional space. If input has
+three or more dimensions, all but the last dimension are flattened.
+
+Each dimension is independently associated with its own strictly increasing
+sequence of bin edges. Bin edges may be specified explicitly by passing a
+sequence of 1D tensors. Alternatively, bin edges may be constructed
+automatically by passing a sequence of integers specifying the number of
+equal-width bins in each dimension.
+
+For each N-dimensional point in input:
+
+    
+
+  * Each of its coordinates is binned independently among the bin edges
+    
+
+corresponding to its dimension
+
+  * Binning results are combined to identify the N-dimensional bin (if any)
+    
+
+into which the point falls
+
+  * If the point falls into a bin, the bin’s count (or total weight) is incremented
+
+  * Points which do not fall into any bin do not contribute to the output
+
+`bins` can be a sequence of N 1D tensors, a sequence of N ints, or a single
+int.
+
+If `bins` is a sequence of N 1D tensors, it explicitly specifies the N
+sequences of bin edges. Each 1D tensor should contain a strictly increasing
+sequence with at least one element. A sequence of K bin edges defines K-1
+bins, explicitly specifying the left and right edges of all bins. Every bin is
+exclusive of its left edge. Only the rightmost bin is inclusive of its right
+edge.
+
+If `bins` is a sequence of N ints, it specifies the number of equal-width bins
+in each dimension. By default, the leftmost and rightmost bin edges in each
+dimension are determined by the minimum and maximum elements of the input
+tensor in the corresponding dimension. The `range` argument can be provided to
+manually specify the leftmost and rightmost bin edges in each dimension.
+
+If `bins` is an int, it specifies the number of equal-width bins for all
+dimensions.
+
+Note
+
+See also `torch.histogram()`, which specifically computes 1D histograms. While
+`torch.histogramdd()` infers the dimensionality of its bins and binned values
+from the shape of `input`, `torch.histogram()` accepts and flattens `input` of
+any shape.
+
+Parameters
+
+    
+
+  * **input** ( _Tensor_) – the input tensor.
+
+  * **bins** – Tensor[], int[], or int. If Tensor[], defines the sequences of bin edges. If int[], defines the number of equal-width bins in each dimension. If int, defines the number of equal-width bins for all dimensions.
+
+Keyword Arguments
+
+    
+
+  * **range** ( _sequence_ _of_ _float_) – Defines the leftmost and rightmost bin edges in each dimension.
+
+  * **weight** ( _Tensor_) – By default, each value in the input has weight 1. If a weight tensor is passed, each N-dimensional coordinate in input contributes its associated weight towards its bin’s result. The weight tensor should have the same shape as the `input` tensor excluding its innermost dimension N.
+
+  * **density** ( _bool_) – If False (default), the result will contain the count (or total weight) in each bin. If True, each count (weight) is divided by the total count (total weight), then divided by the volume of its associated bin.
+
+Returns
+
+    
+
+N-dimensional Tensor containing the values of the histogram.
+bin_edges(Tensor[]): sequence of N 1D Tensors containing the bin edges.
+
+Return type
+
+    
+
+hist (Tensor)
+
+Example::
+
+    
+    
+    
+    >>> torch.histogramdd(torch.tensor([[0., 1.], [1., 0.], [2., 0.], [2., 2.]]), bins=[3, 3],
+    ...                   weight=torch.tensor([1., 2., 4., 8.]))
+        torch.return_types.histogramdd(
+            hist=tensor([[0., 1., 0.],
+                         [2., 0., 0.],
+                         [4., 0., 8.]]),
+            bin_edges=(tensor([0.0000, 0.6667, 1.3333, 2.0000]),
+                       tensor([0.0000, 0.6667, 1.3333, 2.0000])))
+    
+    
+    
+    >>> torch.histogramdd(torch.tensor([[0., 0.], [1., 1.], [2., 2.]]), bins=[2, 2],
+    ...                   range=[0., 1., 0., 1.], density=True)
+        torch.return_types.histogramdd(
+           hist=tensor([[2., 0.],
+                        [0., 2.]]),
+           bin_edges=(tensor([0.0000, 0.5000, 1.0000]),
+                      tensor([0.0000, 0.5000, 1.0000])))
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.histogramdd
+    * `histogramdd()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

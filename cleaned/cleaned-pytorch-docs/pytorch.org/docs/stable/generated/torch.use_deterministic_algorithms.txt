@@ -1,0 +1,531 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.use_deterministic_algorithms
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.use_deterministic_algorithms¶
+
+torch.use_deterministic_algorithms( _mode_ , _*_ , _warn_only
+=False_)[source]¶
+
+    
+
+Sets whether PyTorch operations must use “deterministic” algorithms. That is,
+algorithms which, given the same input, and when run on the same software and
+hardware, always produce the same output. When enabled, operations will use
+deterministic algorithms when available, and if only nondeterministic
+algorithms are available they will throw a `RuntimeError` when called.
+
+Note
+
+This setting alone is not always enough to make an application reproducible.
+Refer to Reproducibility for more information.
+
+Note
+
+`torch.set_deterministic_debug_mode()` offers an alternative interface for
+this feature.
+
+The following normally-nondeterministic operations will act deterministically
+when `mode=True`:
+
+>   * `torch.nn.Conv1d` when called on CUDA tensor
+>
+>   * `torch.nn.Conv2d` when called on CUDA tensor
+>
+>   * `torch.nn.Conv3d` when called on CUDA tensor
+>
+>   * `torch.nn.ConvTranspose1d` when called on CUDA tensor
+>
+>   * `torch.nn.ConvTranspose2d` when called on CUDA tensor
+>
+>   * `torch.nn.ConvTranspose3d` when called on CUDA tensor
+>
+>   * `torch.bmm()` when called on sparse-dense CUDA tensors
+>
+>   * `torch.Tensor.__getitem__()` when attempting to differentiate a CPU
+> tensor and the index is a list of tensors
+>
+>   * `torch.Tensor.index_put()` with `accumulate=False`
+>
+>   * `torch.Tensor.index_put()` with `accumulate=True` when called on a CPU
+> tensor
+>
+>   * `torch.Tensor.put_()` with `accumulate=True` when called on a CPU tensor
+>
+>   * `torch.Tensor.scatter_add_()` when called on a CUDA tensor
+>
+>   * `torch.gather()` when called on a CUDA tensor that requires grad
+>
+>   * `torch.index_add()` when called on CUDA tensor
+>
+>   * `torch.index_select()` when attempting to differentiate a CUDA tensor
+>
+>   * `torch.repeat_interleave()` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.Tensor.index_copy()` when called on a CPU or CUDA tensor
+>
+>   * `torch.Tensor.scatter()` when src type is Tensor and called on CUDA
+> tensor
+>
+>   * `torch.Tensor.scatter_reduce()` when `reduce='sum'` or `reduce='mean'`
+> and called on CUDA tensor
+>
+>   * `torch.Tensor.resize_()`, when called with a tensor that is not
+> quantized, sets new elements to a known value. Floating point or complex
+> values are set to NaN. Integer values are set to the maximum value.
+>
+>   * `torch.empty()`, `torch.empty_like()`, `torch.empty_strided()`, and
+> `torch.empty_permuted()` will fill the output tensor with a known value.
+> Floating point or complex dtype tensors are filled with NaN. Integer dtype
+> tensors are filled with the maximum value.
+>
+>
+
+The following normally-nondeterministic operations will throw a `RuntimeError`
+when `mode=True`:
+
+>   * `torch.nn.AvgPool3d` when attempting to differentiate a CUDA tensor
+>
+>   * `torch.nn.AdaptiveAvgPool2d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.AdaptiveAvgPool3d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.MaxPool3d` when attempting to differentiate a CUDA tensor
+>
+>   * `torch.nn.AdaptiveMaxPool2d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.FractionalMaxPool2d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.FractionalMaxPool3d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.MaxUnpool1d`
+>
+>   * `torch.nn.MaxUnpool2d`
+>
+>   * `torch.nn.MaxUnpool3d`
+>
+>   * `torch.nn.functional.interpolate()` when attempting to differentiate a
+> CUDA tensor and one of the following modes is used:
+>
+>     * `linear`
+>
+>     * `bilinear`
+>
+>     * `bicubic`
+>
+>     * `trilinear`
+>
+>   * `torch.nn.ReflectionPad1d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.ReflectionPad2d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.ReflectionPad3d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.ReplicationPad1d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.ReplicationPad2d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.ReplicationPad3d` when attempting to differentiate a CUDA
+> tensor
+>
+>   * `torch.nn.NLLLoss` when called on a CUDA tensor
+>
+>   * `torch.nn.CTCLoss` when attempting to differentiate a CUDA tensor
+>
+>   * `torch.nn.EmbeddingBag` when attempting to differentiate a CUDA tensor
+> when `mode='max'`
+>
+>   * `torch.Tensor.put_()` when `accumulate=False`
+>
+>   * `torch.Tensor.put_()` when `accumulate=True` and called on a CUDA tensor
+>
+>   * `torch.histc()` when called on a CUDA tensor
+>
+>   * `torch.bincount()` when called on a CUDA tensor and `weights` tensor is
+> given
+>
+>   * `torch.kthvalue()` with called on a CUDA tensor
+>
+>   * `torch.median()` with indices output when called on a CUDA tensor
+>
+>   * `torch.nn.functional.grid_sample()` when attempting to differentiate a
+> CUDA tensor
+>
+>   * `torch.cumsum()` when called on a CUDA tensor when dtype is floating
+> point or complex
+>
+>   * `torch.Tensor.scatter_reduce()` when `reduce='prod'` and called on CUDA
+> tensor
+>
+>   * `torch.Tensor.resize_()` when called with a quantized tensor
+>
+>
+
+A handful of CUDA operations are nondeterministic if the CUDA version is 10.2
+or greater, unless the environment variable `CUBLAS_WORKSPACE_CONFIG=:4096:8`
+or `CUBLAS_WORKSPACE_CONFIG=:16:8` is set. See the CUDA documentation for more
+details:
+https://docs.nvidia.com/cuda/cublas/index.html#cublasApi_reproducibility If
+one of these environment variable configurations is not set, a `RuntimeError`
+will be raised from these operations when called with CUDA tensors:
+
+>   * `torch.mm()`
+>
+>   * `torch.mv()`
+>
+>   * `torch.bmm()`
+>
+>
+
+Note that deterministic operations tend to have worse performance than
+nondeterministic operations.
+
+Note
+
+This flag does not detect or prevent nondeterministic behavior caused by
+calling an inplace operation on a tensor with an internal memory overlap or by
+giving such a tensor as the `out` argument for an operation. In these cases,
+multiple writes of different data may target a single memory location, and the
+order of writes is not guaranteed.
+
+Parameters
+
+    
+
+**mode** (`bool`) – If True, makes potentially nondeterministic operations
+switch to a deterministic algorithm or throw a runtime error. If False, allows
+nondeterministic operations.
+
+Keyword Arguments
+
+    
+
+**warn_only** (`bool`, optional) – If True, operations that do not have a
+deterministic implementation will throw a warning instead of an error.
+Default: `False`
+
+Example:
+
+    
+    
+    >>> torch.use_deterministic_algorithms(True)
+    
+    # Forward mode nondeterministic error
+    >>> torch.randn(10, device='cuda').kthvalue(0)
+    ...
+    RuntimeError: kthvalue CUDA does not have a deterministic implementation...
+    
+    # Backward mode nondeterministic error
+    >>> torch.nn.AvgPool3d(1)(torch.randn(3, 4, 5, 6, requires_grad=True).cuda()).sum().backward()
+    ...
+    RuntimeError: avg_pool3d_backward_cuda does not have a deterministic implementation...
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.use_deterministic_algorithms
+    * `use_deterministic_algorithms()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

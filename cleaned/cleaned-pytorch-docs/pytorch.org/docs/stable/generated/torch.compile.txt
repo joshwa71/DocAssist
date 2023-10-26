@@ -1,0 +1,397 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.compile
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.compile¶
+
+torch.compile( _model =None_, _*_ , _fullgraph =False_, _dynamic =None_,
+_backend ='inductor'_, _mode =None_, _options =None_, _disable
+=False_)[source]¶
+
+    
+
+Optimizes given model/function using TorchDynamo and specified backend.
+
+Concretely, for every frame executed within the compiled region, we will
+attempt to compile it and cache the compiled result on the code object for
+future use. A single frame may be compiled multiple times if previous compiled
+results are not applicable for subsequent calls (this is called a “guard
+failure), you can use TORCH_LOGS=guards to debug these situations. Multiple
+compiled results can be associated with a frame up to
+`torch._dynamo.config.cache_size_limit`, which defaults to 64; at which point
+we will fall back to eager. Note that compile caches are per _code object_ ,
+not frame; if you dynamically create multiple copies of a function, they will
+all share the same code cache.
+
+Parameters
+
+    
+
+  * **model** ( _Callable_ ) – Module/function to optimize
+
+  * **fullgraph** ( _bool_) – Whether it is ok to break model into several subgraphs
+
+  * **dynamic** ( _bool_ _or_ _None_ ) – Use dynamic shape tracing. When this is True, we will up-front attempt to generate a kernel that is as dynamic as possible to avoid recompilations when sizes change. This may not always work as some operations/optimizations will force specialization; use TORCH_LOGS=dynamic to debug overspecialization. When this is False, we will NEVER generate dynamic kernels, we will always specialize. By default (None), we automatically detect if dynamism has occurred and compile a more dynamic kernel upon recompile.
+
+  * **backend** ( _str_ _or_ _Callable_ ) – 
+
+backend to be used
+
+    * ”inductor” is the default backend, which is a good balance between performance and overhead
+
+    * Non experimental in-tree backends can be seen with torch._dynamo.list_backends()
+
+    * Experimental or debug in-tree backends can be seen with torch._dynamo.list_backends(None)
+
+    * To register an out-of-tree custom backend: https://pytorch.org/docs/main/compile/custom-backends.html
+
+  * **mode** ( _str_) – 
+
+Can be either “default”, “reduce-overhead”, “max-autotune” or “max-autotune-
+no-cudagraphs”
+
+    * ”default” is the default mode, which is a good balance between performance and overhead
+
+    * ”reduce-overhead” is a mode that reduces the overhead of python with CUDA graphs, useful for small batches. Reduction of overhead can come at the cost of more memory usage, as we will cache the workspace memory required for the invocation so that we do not have to reallocate it on subsequent runs. Reduction of overhead is not guaranteed to work; today, we only reduce overhead for CUDA only graphs which do not mutate inputs. There are other circumstances where CUDA graphs are not applicable; use TORCH_LOG=perf_hints to debug.
+
+    * ”max-autotune” is a mode that leverages Triton based matrix multiplications and convolutions It enables CUDA graphs by default.
+
+    * ”max-autotune-no-cudagraphs” is a mode similar to “max-autotune” but without CUDA graphs
+
+    * To see the exact configs that each mode sets you can call torch._inductor.list_mode_options()
+
+  * **options** ( _dict_) – 
+
+A dictionary of options to pass to the backend. Some notable ones to try out
+are
+
+    * epilogue_fusion which fuses pointwise ops into templates. Requires max_autotune to also be set
+
+    * max_autotune which will profile to pick the best matmul configuration
+
+    * fallback_random which is useful when debugging accuracy issues
+
+    * shape_padding which pads matrix shapes to better align loads on GPUs especially for tensor cores
+
+    * triton.cudagraphs which will reduce the overhead of python with CUDA graphs
+
+    * trace.enabled which is the most useful debugging flag to turn on
+
+    * trace.graph_diagram which will show you a picture of your graph after fusion
+
+    * For inductor you can see the full list of configs that it supports by calling torch._inductor.list_options()
+
+  * **disable** ( _bool_) – Turn torch.compile() into a no-op for testing
+
+Return type
+
+    
+
+_Callable_
+
+Example:
+
+    
+    
+    @torch.compile(options={"triton.cudagraphs": True}, fullgraph=True)
+    def foo(x):
+        return torch.sin(x) + torch.cos(x)
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.compile
+    * `compile()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

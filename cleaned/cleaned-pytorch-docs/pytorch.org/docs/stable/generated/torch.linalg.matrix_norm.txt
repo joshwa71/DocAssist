@@ -1,0 +1,434 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.linalg >
+  * torch.linalg.matrix_norm
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.linalg.matrix_norm¶
+
+torch.linalg.matrix_norm( _A_ , _ord ='fro'_, _dim =(-2, -1)_, _keepdim
+=False_, _*_ , _dtype =None_, _out =None_) -> Tensor¶
+
+    
+
+Computes a matrix norm.
+
+If `A` is complex valued, it computes the norm of `A`.abs()
+
+Support input of float, double, cfloat and cdouble dtypes. Also supports
+batches of matrices: the norm will be computed over the dimensions specified
+by the 2-tuple `dim` and the other dimensions will be treated as batch
+dimensions. The output will have the same batch dimensions.
+
+`ord` defines the matrix norm that is computed. The following norms are
+supported:
+
+`ord`
+
+|
+
+matrix norm  
+  
+---|---  
+  
+‘fro’ (default)
+
+|
+
+Frobenius norm  
+  
+‘nuc’
+
+|
+
+nuclear norm  
+  
+inf
+
+|
+
+max(sum(abs(x), dim=1))  
+  
+-inf
+
+|
+
+min(sum(abs(x), dim=1))  
+  
+1
+
+|
+
+max(sum(abs(x), dim=0))  
+  
+-1
+
+|
+
+min(sum(abs(x), dim=0))  
+  
+2
+
+|
+
+largest singular value  
+  
+-2
+
+|
+
+smallest singular value  
+  
+where inf refers to float(‘inf’), NumPy’s inf object, or any equivalent
+object.
+
+Parameters
+
+    
+
+  * **A** ( _Tensor_) – tensor with two or more dimensions. By default its shape is interpreted as (*, m, n) where * is zero or more batch dimensions, but this behavior can be controlled using `dim`.
+
+  * **ord** ( _int_ _,_ _inf_ _,_ _-inf_ _,_ _'fro'_ _,_ _'nuc'_ _,_ _optional_ ) – order of norm. Default: ‘fro’
+
+  * **dim** ( _Tuple_ _[_ _int_ _,_ _int_ _]_ _,_ _optional_ ) – dimensions over which to compute the norm. Default: (-2, -1)
+
+  * **keepdim** ( _bool_ _,_ _optional_ ) – If set to True, the reduced dimensions are retained in the result as dimensions with size one. Default: False
+
+Keyword Arguments
+
+    
+
+  * **out** ( _Tensor_ _,_ _optional_ ) – output tensor. Ignored if None. Default: None.
+
+  * **dtype** (`torch.dtype`, optional) – If specified, the input tensor is cast to `dtype` before performing the operation, and the returned tensor’s type will be `dtype`. Default: None
+
+Returns
+
+    
+
+A real-valued tensor, even when `A` is complex.
+
+Examples:
+
+    
+    
+    >>> from torch import linalg as LA
+    >>> A = torch.arange(9, dtype=torch.float).reshape(3, 3)
+    >>> A
+    tensor([[0., 1., 2.],
+            [3., 4., 5.],
+            [6., 7., 8.]])
+    >>> LA.matrix_norm(A)
+    tensor(14.2829)
+    >>> LA.matrix_norm(A, ord=-1)
+    tensor(9.)
+    >>> B = A.expand(2, -1, -1)
+    >>> B
+    tensor([[[0., 1., 2.],
+            [3., 4., 5.],
+            [6., 7., 8.]],
+    
+            [[0., 1., 2.],
+            [3., 4., 5.],
+            [6., 7., 8.]]])
+    >>> LA.matrix_norm(B)
+    tensor([14.2829, 14.2829])
+    >>> LA.matrix_norm(B, dim=(0, 2))
+    tensor([ 3.1623, 10.0000, 17.2627])
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.linalg.matrix_norm
+    * `matrix_norm()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

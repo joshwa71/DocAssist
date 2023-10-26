@@ -1,0 +1,462 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * Embedding
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# Embedding¶
+
+_class _torch.nn.Embedding( _num_embeddings_ , _embedding_dim_ , _padding_idx
+=None_, _max_norm =None_, _norm_type =2.0_, _scale_grad_by_freq =False_,
+_sparse =False_, __weight =None_, __freeze =False_, _device =None_, _dtype
+=None_)[source]¶
+
+    
+
+A simple lookup table that stores embeddings of a fixed dictionary and size.
+
+This module is often used to store word embeddings and retrieve them using
+indices. The input to the module is a list of indices, and the output is the
+corresponding word embeddings.
+
+Parameters
+
+    
+
+  * **num_embeddings** ( _int_) – size of the dictionary of embeddings
+
+  * **embedding_dim** ( _int_) – the size of each embedding vector
+
+  * **padding_idx** ( _int_ _,_ _optional_ ) – If specified, the entries at `padding_idx` do not contribute to the gradient; therefore, the embedding vector at `padding_idx` is not updated during training, i.e. it remains as a fixed “pad”. For a newly constructed Embedding, the embedding vector at `padding_idx` will default to all zeros, but can be updated to another value to be used as the padding vector.
+
+  * **max_norm** ( _float_ _,_ _optional_ ) – If given, each embedding vector with norm larger than `max_norm` is renormalized to have norm `max_norm`.
+
+  * **norm_type** ( _float_ _,_ _optional_ ) – The p of the p-norm to compute for the `max_norm` option. Default `2`.
+
+  * **scale_grad_by_freq** ( _bool_ _,_ _optional_ ) – If given, this will scale gradients by the inverse of frequency of the words in the mini-batch. Default `False`.
+
+  * **sparse** ( _bool_ _,_ _optional_ ) – If `True`, gradient w.r.t. `weight` matrix will be a sparse tensor. See Notes for more details regarding sparse gradients.
+
+Variables
+
+    
+
+**weight** ( _Tensor_) – the learnable weights of the module of shape
+(num_embeddings, embedding_dim) initialized from N(0,1)\mathcal{N}(0, 1)N(0,1)
+
+Shape:
+
+    
+
+  * Input: (∗)(*)(∗), IntTensor or LongTensor of arbitrary shape containing the indices to extract
+
+  * Output: (∗,H)(*, H)(∗,H), where * is the input shape and H=embedding_dimH=\text{embedding\\_dim}H=embedding_dim
+
+Note
+
+Keep in mind that only a limited number of optimizers support sparse
+gradients: currently it’s `optim.SGD` (CUDA and CPU), `optim.SparseAdam` (CUDA
+and CPU) and `optim.Adagrad` (CPU)
+
+Note
+
+When `max_norm` is not `None`, `Embedding`’s forward method will modify the
+`weight` tensor in-place. Since tensors needed for gradient computations
+cannot be modified in-place, performing a differentiable operation on
+`Embedding.weight` before calling `Embedding`’s forward method requires
+cloning `Embedding.weight` when `max_norm` is not `None`. For example:
+
+    
+    
+    n, d, m = 3, 5, 7
+    embedding = nn.Embedding(n, d, max_norm=True)
+    W = torch.randn((m, d), requires_grad=True)
+    idx = torch.tensor([1, 2])
+    a = embedding.weight.clone() @ W.t()  # weight must be cloned for this to be differentiable
+    b = embedding(idx) @ W.t()  # modifies weight in-place
+    out = (a.unsqueeze(0) + b.unsqueeze(1))
+    loss = out.sigmoid().prod()
+    loss.backward()
+    
+
+Examples:
+
+    
+    
+    >>> # an Embedding module containing 10 tensors of size 3
+    >>> embedding = nn.Embedding(10, 3)
+    >>> # a batch of 2 samples of 4 indices each
+    >>> input = torch.LongTensor([[1, 2, 4, 5], [4, 3, 2, 9]])
+    >>> embedding(input)
+    tensor([[[-0.0251, -1.6902,  0.7172],
+             [-0.6431,  0.0748,  0.6969],
+             [ 1.4970,  1.3448, -0.9685],
+             [-0.3677, -2.7265, -0.1685]],
+    
+            [[ 1.4970,  1.3448, -0.9685],
+             [ 0.4362, -0.4004,  0.9400],
+             [-0.6431,  0.0748,  0.6969],
+             [ 0.9124, -2.3616,  1.1151]]])
+    
+    
+    >>> # example with padding_idx
+    >>> embedding = nn.Embedding(10, 3, padding_idx=0)
+    >>> input = torch.LongTensor([[0, 2, 0, 5]])
+    >>> embedding(input)
+    tensor([[[ 0.0000,  0.0000,  0.0000],
+             [ 0.1535, -2.0309,  0.9315],
+             [ 0.0000,  0.0000,  0.0000],
+             [-0.1655,  0.9897,  0.0635]]])
+    
+    >>> # example of changing `pad` vector
+    >>> padding_idx = 0
+    >>> embedding = nn.Embedding(3, 3, padding_idx=padding_idx)
+    >>> embedding.weight
+    Parameter containing:
+    tensor([[ 0.0000,  0.0000,  0.0000],
+            [-0.7895, -0.7089, -0.0364],
+            [ 0.6778,  0.5803,  0.2678]], requires_grad=True)
+    >>> with torch.no_grad():
+    ...     embedding.weight[padding_idx] = torch.ones(3)
+    >>> embedding.weight
+    Parameter containing:
+    tensor([[ 1.0000,  1.0000,  1.0000],
+            [-0.7895, -0.7089, -0.0364],
+            [ 0.6778,  0.5803,  0.2678]], requires_grad=True)
+    
+
+_classmethod _from_pretrained( _embeddings_ , _freeze =True_, _padding_idx
+=None_, _max_norm =None_, _norm_type =2.0_, _scale_grad_by_freq =False_,
+_sparse =False_)[source]¶
+
+    
+
+Creates Embedding instance from given 2-dimensional FloatTensor.
+
+Parameters
+
+    
+
+  * **embeddings** ( _Tensor_) – FloatTensor containing weights for the Embedding. First dimension is being passed to Embedding as `num_embeddings`, second as `embedding_dim`.
+
+  * **freeze** ( _bool_ _,_ _optional_ ) – If `True`, the tensor does not get updated in the learning process. Equivalent to `embedding.weight.requires_grad = False`. Default: `True`
+
+  * **padding_idx** ( _int_ _,_ _optional_ ) – If specified, the entries at `padding_idx` do not contribute to the gradient; therefore, the embedding vector at `padding_idx` is not updated during training, i.e. it remains as a fixed “pad”.
+
+  * **max_norm** ( _float_ _,_ _optional_ ) – See module initialization documentation.
+
+  * **norm_type** ( _float_ _,_ _optional_ ) – See module initialization documentation. Default `2`.
+
+  * **scale_grad_by_freq** ( _bool_ _,_ _optional_ ) – See module initialization documentation. Default `False`.
+
+  * **sparse** ( _bool_ _,_ _optional_ ) – See module initialization documentation.
+
+Examples:
+
+    
+    
+    >>> # FloatTensor containing pretrained weights
+    >>> weight = torch.FloatTensor([[1, 2.3, 3], [4, 5.1, 6.3]])
+    >>> embedding = nn.Embedding.from_pretrained(weight)
+    >>> # Get embeddings for index 1
+    >>> input = torch.LongTensor([1])
+    >>> embedding(input)
+    tensor([[ 4.0000,  5.1000,  6.3000]])
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * Embedding
+    * `Embedding`
+      * `Embedding.from_pretrained()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

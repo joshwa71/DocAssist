@@ -1,0 +1,399 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.cuda >
+  * torch.cuda.memory_stats
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.cuda.memory_stats¶
+
+torch.cuda.memory_stats( _device =None_)[source]¶
+
+    
+
+Returns a dictionary of CUDA memory allocator statistics for a given device.
+
+The return value of this function is a dictionary of statistics, each of which
+is a non-negative integer.
+
+Core statistics:
+
+  * `"allocated.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: number of allocation requests received by the memory allocator.
+
+  * `"allocated_bytes.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: amount of allocated memory.
+
+  * `"segment.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: number of reserved segments from `cudaMalloc()`.
+
+  * `"reserved_bytes.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: amount of reserved memory.
+
+  * `"active.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: number of active memory blocks.
+
+  * `"active_bytes.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: amount of active memory.
+
+  * `"inactive_split.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: number of inactive, non-releasable memory blocks.
+
+  * `"inactive_split_bytes.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: amount of inactive, non-releasable memory.
+
+For these core statistics, values are broken down as follows.
+
+Pool type:
+
+  * `all`: combined statistics across all memory pools.
+
+  * `large_pool`: statistics for the large allocation pool (as of October 2019, for size >= 1MB allocations).
+
+  * `small_pool`: statistics for the small allocation pool (as of October 2019, for size < 1MB allocations).
+
+Metric type:
+
+  * `current`: current value of this metric.
+
+  * `peak`: maximum value of this metric.
+
+  * `allocated`: historical total increase in this metric.
+
+  * `freed`: historical total decrease in this metric.
+
+In addition to the core statistics, we also provide some simple event
+counters:
+
+  * `"num_alloc_retries"`: number of failed `cudaMalloc` calls that result in a cache flush and retry.
+
+  * `"num_ooms"`: number of out-of-memory errors thrown.
+
+The caching allocator can be configured via ENV to not split blocks larger
+than a defined size (see Memory Management section of the Cuda Semantics
+documentation). This helps avoid memory fragmentation but may have a
+performance penalty. Additional outputs to assist with tuning and evaluating
+impact:
+
+  * `"max_split_size"`: blocks above this size will not be split.
+
+  * `"oversize_allocations.{current,peak,allocated,freed}"`: number of over-size allocation requests received by the memory allocator.
+
+  * `"oversize_segments.{current,peak,allocated,freed}"`: number of over-size reserved segments from `cudaMalloc()`.
+
+The caching allocator can be configured via ENV to round memory allocations in
+order to reduce fragmentation. Sometimes the overhead from rounding can be
+higher than the fragmentation it helps reduce. The following stat can be used
+to check if rounding adds too much overhead:
+
+  * `"requested_bytes.{all,large_pool,small_pool}.{current,peak,allocated,freed}"`: memory requested by client code, compare this with allocated_bytes to check if allocation rounding adds too much overhead.
+
+Parameters
+
+    
+
+**device** ( _torch.device_ _or_ _int_ _,_ _optional_ ) – selected device.
+Returns statistics for the current device, given by `current_device()`, if
+`device` is `None` (default).
+
+Return type
+
+    
+
+_Dict_[str, _Any_]
+
+Note
+
+See Memory management for more details about GPU memory management.
+
+Note
+
+With backend:cudaMallocAsync, some stats are not meaningful, and are always
+reported as zero.
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.cuda.memory_stats
+    * `memory_stats()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

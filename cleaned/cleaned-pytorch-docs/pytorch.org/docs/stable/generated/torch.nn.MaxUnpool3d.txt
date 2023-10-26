@@ -1,0 +1,383 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * MaxUnpool3d
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# MaxUnpool3d¶
+
+_class _torch.nn.MaxUnpool3d( _kernel_size_ , _stride =None_, _padding
+=0_)[source]¶
+
+    
+
+Computes a partial inverse of `MaxPool3d`.
+
+`MaxPool3d` is not fully invertible, since the non-maximal values are lost.
+`MaxUnpool3d` takes in as input the output of `MaxPool3d` including the
+indices of the maximal values and computes a partial inverse in which all non-
+maximal values are set to zero.
+
+Note
+
+This operation may behave nondeterministically when the input indices has
+repeat values. See https://github.com/pytorch/pytorch/issues/80827 and
+Reproducibility for more information.
+
+Note
+
+`MaxPool3d` can map several input sizes to the same output sizes. Hence, the
+inversion process can get ambiguous. To accommodate this, you can provide the
+needed output size as an additional argument `output_size` in the forward
+call. See the Inputs section below.
+
+Parameters
+
+    
+
+  * **kernel_size** ( _int_ _or_ _tuple_) – Size of the max pooling window.
+
+  * **stride** ( _int_ _or_ _tuple_) – Stride of the max pooling window. It is set to `kernel_size` by default.
+
+  * **padding** ( _int_ _or_ _tuple_) – Padding that was added to the input
+
+Inputs:
+
+    
+
+  * input: the input Tensor to invert
+
+  * indices: the indices given out by `MaxPool3d`
+
+  * output_size (optional): the targeted output size
+
+Shape:
+
+    
+
+  * Input: (N,C,Din,Hin,Win)(N, C, D_{in}, H_{in}, W_{in})(N,C,Din​,Hin​,Win​) or (C,Din,Hin,Win)(C, D_{in}, H_{in}, W_{in})(C,Din​,Hin​,Win​).
+
+  * Output: (N,C,Dout,Hout,Wout)(N, C, D_{out}, H_{out}, W_{out})(N,C,Dout​,Hout​,Wout​) or (C,Dout,Hout,Wout)(C, D_{out}, H_{out}, W_{out})(C,Dout​,Hout​,Wout​), where
+
+Dout=(Din−1)×stride[0]−2×padding[0]+kernel_size[0]D_{out} = (D_{in} - 1)
+\times \text{stride[0]} - 2 \times \text{padding[0]} + \text{kernel\\_size[0]}
+Dout​=(Din​−1)×stride[0]−2×padding[0]+kernel_size[0]
+
+Hout=(Hin−1)×stride[1]−2×padding[1]+kernel_size[1]H_{out} = (H_{in} - 1)
+\times \text{stride[1]} - 2 \times \text{padding[1]} + \text{kernel\\_size[1]}
+Hout​=(Hin​−1)×stride[1]−2×padding[1]+kernel_size[1]
+
+Wout=(Win−1)×stride[2]−2×padding[2]+kernel_size[2]W_{out} = (W_{in} - 1)
+\times \text{stride[2]} - 2 \times \text{padding[2]} + \text{kernel\\_size[2]}
+Wout​=(Win​−1)×stride[2]−2×padding[2]+kernel_size[2]
+
+or as given by `output_size` in the call operator
+
+Example:
+
+    
+    
+    >>> # pool of square window of size=3, stride=2
+    >>> pool = nn.MaxPool3d(3, stride=2, return_indices=True)
+    >>> unpool = nn.MaxUnpool3d(3, stride=2)
+    >>> output, indices = pool(torch.randn(20, 16, 51, 33, 15))
+    >>> unpooled_output = unpool(output, indices)
+    >>> unpooled_output.size()
+    torch.Size([20, 16, 51, 33, 15])
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * MaxUnpool3d
+    * `MaxUnpool3d`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

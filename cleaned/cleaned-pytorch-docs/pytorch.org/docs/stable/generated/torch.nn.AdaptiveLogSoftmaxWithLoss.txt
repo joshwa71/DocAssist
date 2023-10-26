@@ -1,0 +1,464 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * AdaptiveLogSoftmaxWithLoss
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# AdaptiveLogSoftmaxWithLoss¶
+
+_class _torch.nn.AdaptiveLogSoftmaxWithLoss( _in_features_ , _n_classes_ ,
+_cutoffs_ , _div_value =4.0_, _head_bias =False_, _device =None_, _dtype
+=None_)[source]¶
+
+    
+
+Efficient softmax approximation as described in Efficient softmax
+approximation for GPUs by Edouard Grave, Armand Joulin, Moustapha Cissé, David
+Grangier, and Hervé Jégou.
+
+Adaptive softmax is an approximate strategy for training models with large
+output spaces. It is most effective when the label distribution is highly
+imbalanced, for example in natural language modelling, where the word
+frequency distribution approximately follows the Zipf’s law.
+
+Adaptive softmax partitions the labels into several clusters, according to
+their frequency. These clusters may contain different number of targets each.
+Additionally, clusters containing less frequent labels assign lower
+dimensional embeddings to those labels, which speeds up the computation. For
+each minibatch, only clusters for which at least one target is present are
+evaluated.
+
+The idea is that the clusters which are accessed frequently (like the first
+one, containing most frequent labels), should also be cheap to compute – that
+is, contain a small number of assigned labels.
+
+We highly recommend taking a look at the original paper for more details.
+
+  * `cutoffs` should be an ordered Sequence of integers sorted in the increasing order. It controls number of clusters and the partitioning of targets into clusters. For example setting `cutoffs = [10, 100, 1000]` means that first 10 targets will be assigned to the ‘head’ of the adaptive softmax, targets 11, 12, …, 100 will be assigned to the first cluster, and targets 101, 102, …, 1000 will be assigned to the second cluster, while targets 1001, 1002, …, n_classes - 1 will be assigned to the last, third cluster.
+
+  * `div_value` is used to compute the size of each additional cluster, which is given as ⌊in_featuresdiv_valueidx⌋\left\lfloor\frac{\texttt{in\\_features}}{\texttt{div\\_value}^{idx}}\right\rfloor⌊div_valueidxin_features​⌋, where idxidxidx is the cluster index (with clusters for less frequent words having larger indices, and indices starting from 111).
+
+  * `head_bias` if set to True, adds a bias term to the ‘head’ of the adaptive softmax. See paper for details. Set to False in the official implementation.
+
+Warning
+
+Labels passed as inputs to this module should be sorted according to their
+frequency. This means that the most frequent label should be represented by
+the index 0, and the least frequent label should be represented by the index
+n_classes - 1.
+
+Note
+
+This module returns a `NamedTuple` with `output` and `loss` fields. See
+further documentation for details.
+
+Note
+
+To compute log-probabilities for all classes, the `log_prob` method can be
+used.
+
+Parameters
+
+    
+
+  * **in_features** ( _int_) – Number of features in the input tensor
+
+  * **n_classes** ( _int_) – Number of classes in the dataset
+
+  * **cutoffs** ( _Sequence_ ) – Cutoffs used to assign targets to their buckets
+
+  * **div_value** ( _float_ _,_ _optional_ ) – value used as an exponent to compute sizes of the clusters. Default: 4.0
+
+  * **head_bias** ( _bool_ _,_ _optional_ ) – If `True`, adds a bias term to the ‘head’ of the adaptive softmax. Default: `False`
+
+Returns
+
+    
+
+  * **output** is a Tensor of size `N` containing computed target log probabilities for each example
+
+  * **loss** is a Scalar representing the computed negative log likelihood loss
+
+Return type
+
+    
+
+`NamedTuple` with `output` and `loss` fields
+
+Shape:
+
+    
+
+  * input: (N,in_features)(N, \texttt{in\\_features})(N,in_features) or (in_features)(\texttt{in\\_features})(in_features)
+
+  * target: (N)(N)(N) or ()()() where each value satisfies 0<=target[i]<=n_classes0 <= \texttt{target[i]} <= \texttt{n\\_classes}0<=target[i]<=n_classes
+
+  * output1: (N)(N)(N) or ()()()
+
+  * output2: `Scalar`
+
+log_prob( _input_ )[source]¶
+
+    
+
+Computes log probabilities for all n_classes\texttt{n\\_classes}n_classes
+
+Parameters
+
+    
+
+**input** ( _Tensor_) – a minibatch of examples
+
+Returns
+
+    
+
+log-probabilities of for each class ccc in range 0<=c<=n_classes0 <= c <=
+\texttt{n\\_classes}0<=c<=n_classes, where
+n_classes\texttt{n\\_classes}n_classes is a parameter passed to
+`AdaptiveLogSoftmaxWithLoss` constructor.
+
+Return type
+
+    
+
+_Tensor_
+
+Shape:
+
+    
+
+  * Input: (N,in_features)(N, \texttt{in\\_features})(N,in_features)
+
+  * Output: (N,n_classes)(N, \texttt{n\\_classes})(N,n_classes)
+
+predict( _input_ )[source]¶
+
+    
+
+This is equivalent to self.log_prob(input).argmax(dim=1), but is more
+efficient in some cases.
+
+Parameters
+
+    
+
+**input** ( _Tensor_) – a minibatch of examples
+
+Returns
+
+    
+
+a class with the highest probability for each example
+
+Return type
+
+    
+
+output (Tensor)
+
+Shape:
+
+    
+
+  * Input: (N,in_features)(N, \texttt{in\\_features})(N,in_features)
+
+  * Output: (N)(N)(N)
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * AdaptiveLogSoftmaxWithLoss
+    * `AdaptiveLogSoftmaxWithLoss`
+      * `AdaptiveLogSoftmaxWithLoss.log_prob()`
+      * `AdaptiveLogSoftmaxWithLoss.predict()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

@@ -1,0 +1,380 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * BatchNorm3d
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# BatchNorm3d¶
+
+_class _torch.nn.BatchNorm3d( _num_features_ , _eps =1e-05_, _momentum =0.1_,
+_affine =True_, _track_running_stats =True_, _device =None_, _dtype
+=None_)[source]¶
+
+    
+
+Applies Batch Normalization over a 5D input (a mini-batch of 3D inputs with
+additional channel dimension) as described in the paper Batch Normalization:
+Accelerating Deep Network Training by Reducing Internal Covariate Shift .
+
+y=x−E[x]Var[x]+ϵ∗γ+βy = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] +
+\epsilon}} * \gamma + \betay=Var[x]+ϵ​x−E[x]​∗γ+β
+
+The mean and standard-deviation are calculated per-dimension over the mini-
+batches and γ\gammaγ and β\betaβ are learnable parameter vectors of size C
+(where C is the input size). By default, the elements of γ\gammaγ are set to 1
+and the elements of β\betaβ are set to 0. At train time in the forward pass,
+the standard-deviation is calculated via the biased estimator, equivalent to
+`torch.var(input, unbiased=False)`. However, the value stored in the moving
+average of the standard-deviation is calculated via the unbiased estimator,
+equivalent to `torch.var(input, unbiased=True)`.
+
+Also by default, during training this layer keeps running estimates of its
+computed mean and variance, which are then used for normalization during
+evaluation. The running estimates are kept with a default `momentum` of 0.1.
+
+If `track_running_stats` is set to `False`, this layer then does not keep
+running estimates, and batch statistics are instead used during evaluation
+time as well.
+
+Note
+
+This `momentum` argument is different from one used in optimizer classes and
+the conventional notion of momentum. Mathematically, the update rule for
+running statistics here is x^new=(1−momentum)×x^+momentum×xt\hat{x}_\text{new}
+= (1 - \text{momentum}) \times \hat{x} + \text{momentum} \times
+x_tx^new​=(1−momentum)×x^+momentum×xt​, where x^\hat{x}x^ is the estimated
+statistic and xtx_txt​ is the new observed value.
+
+Because the Batch Normalization is done over the C dimension, computing
+statistics on (N, D, H, W) slices, it’s common terminology to call this
+Volumetric Batch Normalization or Spatio-temporal Batch Normalization.
+
+Parameters
+
+    
+
+  * **num_features** ( _int_) – CCC from an expected input of size (N,C,D,H,W)(N, C, D, H, W)(N,C,D,H,W)
+
+  * **eps** ( _float_) – a value added to the denominator for numerical stability. Default: 1e-5
+
+  * **momentum** ( _float_) – the value used for the running_mean and running_var computation. Can be set to `None` for cumulative moving average (i.e. simple average). Default: 0.1
+
+  * **affine** ( _bool_) – a boolean value that when set to `True`, this module has learnable affine parameters. Default: `True`
+
+  * **track_running_stats** ( _bool_) – a boolean value that when set to `True`, this module tracks the running mean and variance, and when set to `False`, this module does not track such statistics, and initializes statistics buffers `running_mean` and `running_var` as `None`. When these buffers are `None`, this module always uses batch statistics. in both training and eval modes. Default: `True`
+
+Shape:
+
+    
+
+  * Input: (N,C,D,H,W)(N, C, D, H, W)(N,C,D,H,W)
+
+  * Output: (N,C,D,H,W)(N, C, D, H, W)(N,C,D,H,W) (same shape as input)
+
+Examples:
+
+    
+    
+    >>> # With Learnable Parameters
+    >>> m = nn.BatchNorm3d(100)
+    >>> # Without Learnable Parameters
+    >>> m = nn.BatchNorm3d(100, affine=False)
+    >>> input = torch.randn(20, 100, 35, 45, 10)
+    >>> output = m(input)
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * BatchNorm3d
+    * `BatchNorm3d`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

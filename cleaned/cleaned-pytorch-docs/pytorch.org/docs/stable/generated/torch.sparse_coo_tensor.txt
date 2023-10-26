@@ -1,0 +1,396 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.sparse_coo_tensor
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.sparse_coo_tensor¶
+
+torch.sparse_coo_tensor( _indices_ , _values_ , _size =None_, _*_ , _dtype
+=None_, _device =None_, _requires_grad =False_, _check_invariants =None_,
+_is_coalesced =None_) -> Tensor¶
+
+    
+
+Constructs a sparse tensor in COO(rdinate) format with specified values at the
+given `indices`.
+
+Note
+
+This function returns an uncoalesced tensor when `is_coalesced` is unspecified
+or `None`.
+
+Note
+
+If the `device` argument is not specified the device of the given `values` and
+indices tensor(s) must match. If, however, the argument is specified the input
+Tensors will be converted to the given device and in turn determine the device
+of the constructed sparse tensor.
+
+Parameters
+
+    
+
+  * **indices** ( _array_like_ ) – Initial data for the tensor. Can be a list, tuple, NumPy `ndarray`, scalar, and other types. Will be cast to a `torch.LongTensor` internally. The indices are the coordinates of the non-zero values in the matrix, and thus should be two-dimensional where the first dimension is the number of tensor dimensions and the second dimension is the number of non-zero values.
+
+  * **values** ( _array_like_ ) – Initial values for the tensor. Can be a list, tuple, NumPy `ndarray`, scalar, and other types.
+
+  * **size** (list, tuple, or `torch.Size`, optional) – Size of the sparse tensor. If not provided the size will be inferred as the minimum size big enough to hold all non-zero elements.
+
+Keyword Arguments
+
+    
+
+  * **dtype** (`torch.dtype`, optional) – the desired data type of returned tensor. Default: if None, infers data type from `values`.
+
+  * **device** (`torch.device`, optional) – the desired device of returned tensor. Default: if None, uses the current device for the default tensor type (see `torch.set_default_tensor_type()`). `device` will be the CPU for CPU tensor types and the current CUDA device for CUDA tensor types.
+
+  * **requires_grad** ( _bool_ _,_ _optional_ ) – If autograd should record operations on the returned tensor. Default: `False`.
+
+  * **check_invariants** ( _bool_ _,_ _optional_ ) – If sparse tensor invariants are checked. Default: as returned by `torch.sparse.check_sparse_tensor_invariants.is_enabled()`, initially False.
+
+  * **is_coalesced** ( _bool_ _,_ _optional_ ) – When``True``, the caller is responsible for providing tensor indices that correspond to a coalesced tensor. If the `check_invariants` flag is False, no error will be raised if the prerequisites are not met and this will lead to silently incorrect results. To force coalescion please use `coalesce()` on the resulting Tensor. Default: None: except for trivial cases (e.g. nnz < 2) the resulting Tensor has is_coalesced set to `False``.
+
+Example:
+
+    
+    
+    >>> i = torch.tensor([[0, 1, 1],
+    ...                   [2, 0, 2]])
+    >>> v = torch.tensor([3, 4, 5], dtype=torch.float32)
+    >>> torch.sparse_coo_tensor(i, v, [2, 4])
+    tensor(indices=tensor([[0, 1, 1],
+                           [2, 0, 2]]),
+           values=tensor([3., 4., 5.]),
+           size=(2, 4), nnz=3, layout=torch.sparse_coo)
+    
+    >>> torch.sparse_coo_tensor(i, v)  # Shape inference
+    tensor(indices=tensor([[0, 1, 1],
+                           [2, 0, 2]]),
+           values=tensor([3., 4., 5.]),
+           size=(2, 3), nnz=3, layout=torch.sparse_coo)
+    
+    >>> torch.sparse_coo_tensor(i, v, [2, 4],
+    ...                         dtype=torch.float64,
+    ...                         device=torch.device('cuda:0'))
+    tensor(indices=tensor([[0, 1, 1],
+                           [2, 0, 2]]),
+           values=tensor([3., 4., 5.]),
+           device='cuda:0', size=(2, 4), nnz=3, dtype=torch.float64,
+           layout=torch.sparse_coo)
+    
+    # Create an empty sparse tensor with the following invariants:
+    #   1. sparse_dim + dense_dim = len(SparseTensor.shape)
+    #   2. SparseTensor._indices().shape = (sparse_dim, nnz)
+    #   3. SparseTensor._values().shape = (nnz, SparseTensor.shape[sparse_dim:])
+    #
+    # For instance, to create an empty sparse tensor with nnz = 0, dense_dim = 0 and
+    # sparse_dim = 1 (hence indices is a 2D tensor of shape = (1, 0))
+    >>> S = torch.sparse_coo_tensor(torch.empty([1, 0]), [], [1])
+    tensor(indices=tensor([], size=(1, 0)),
+           values=tensor([], size=(0,)),
+           size=(1,), nnz=0, layout=torch.sparse_coo)
+    
+    # and to create an empty sparse tensor with nnz = 0, dense_dim = 1 and
+    # sparse_dim = 1
+    >>> S = torch.sparse_coo_tensor(torch.empty([1, 0]), torch.empty([0, 2]), [1, 2])
+    tensor(indices=tensor([], size=(1, 0)),
+           values=tensor([], size=(0, 2)),
+           size=(1, 2), nnz=0, layout=torch.sparse_coo)
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.sparse_coo_tensor
+    * `sparse_coo_tensor()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

@@ -1,0 +1,597 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * Overview: module code
+  * 
+
+Shortcuts
+
+# All modules for which code is available
+
+  * torch
+    * torch._C
+      * torch._C._distributed_autograd
+      * torch._C._distributed_c10d
+      * torch._C._distributed_rpc
+      * torch._C._fft
+      * torch._C._linalg
+      * torch._C._monitor
+      * torch._C._nested
+      * torch._C._nn
+      * torch._C._profiler
+      * torch._C._sparse
+      * torch._C._special
+    * torch.__config__
+    * torch._jit_internal
+    * torch._lobpcg
+    * torch._logging._internal
+    * torch._lowrank
+    * torch._tensor
+    * torch._tensor_str
+    * torch._utils
+    * torch.amp.autocast_mode
+    * torch.ao.nn.intrinsic.modules.fused
+    * torch.ao.nn.intrinsic.qat.modules.conv_fused
+    * torch.ao.nn.intrinsic.qat.modules.linear_relu
+    * torch.ao.nn.intrinsic.quantized.dynamic.modules.linear_relu
+    * torch.ao.nn.intrinsic.quantized.modules.bn_relu
+    * torch.ao.nn.intrinsic.quantized.modules.conv_relu
+    * torch.ao.nn.intrinsic.quantized.modules.linear_relu
+    * torch.ao.nn.qat.dynamic.modules.linear
+    * torch.ao.nn.qat.modules.conv
+    * torch.ao.nn.qat.modules.linear
+    * torch.ao.nn.quantizable.modules.activation
+    * torch.ao.nn.quantizable.modules.rnn
+    * torch.ao.nn.quantized.dynamic.modules.linear
+    * torch.ao.nn.quantized.dynamic.modules.rnn
+    * torch.ao.nn.quantized.functional
+    * torch.ao.nn.quantized.modules.activation
+    * torch.ao.nn.quantized.modules.batchnorm
+    * torch.ao.nn.quantized.modules.conv
+    * torch.ao.nn.quantized.modules.embedding_ops
+    * torch.ao.nn.quantized.modules.functional_modules
+    * torch.ao.nn.quantized.modules.linear
+    * torch.ao.nn.quantized.modules.normalization
+    * torch.ao.ns._numeric_suite
+    * torch.ao.ns._numeric_suite_fx
+    * torch.ao.ns.fx.utils
+    * torch.ao.quantization
+      * torch.ao.quantization.backend_config.backend_config
+      * torch.ao.quantization.fake_quantize
+      * torch.ao.quantization.fuse_modules
+      * torch.ao.quantization.fx.custom_config
+      * torch.ao.quantization.observer
+      * torch.ao.quantization.qconfig
+      * torch.ao.quantization.qconfig_mapping
+      * torch.ao.quantization.quantize
+      * torch.ao.quantization.quantize_fx
+      * torch.ao.quantization.stubs
+    * torch.autograd
+      * torch.autograd.anomaly_mode
+      * torch.autograd.forward_ad
+      * torch.autograd.function
+      * torch.autograd.functional
+      * torch.autograd.grad_mode
+      * torch.autograd.gradcheck
+      * torch.autograd.graph
+      * torch.autograd.profiler
+    * torch.backends.cpu
+    * torch.backends.cuda
+    * torch.backends.cudnn
+    * torch.backends.mkl
+    * torch.backends.mkldnn
+    * torch.backends.mps
+    * torch.backends.openmp
+    * torch.backends.opt_einsum
+    * torch.compiler
+    * torch.cpu
+      * torch.cpu.amp.autocast_mode
+    * torch.cuda
+      * torch.cuda._sanitizer
+      * torch.cuda.amp.autocast_mode
+      * torch.cuda.amp.grad_scaler
+      * torch.cuda.graphs
+      * torch.cuda.jiterator
+      * torch.cuda.memory
+      * torch.cuda.nvtx
+      * torch.cuda.random
+      * torch.cuda.streams
+    * torch.distributed
+      * torch.distributed.algorithms.ddp_comm_hooks.debugging_hooks
+      * torch.distributed.algorithms.ddp_comm_hooks.default_hooks
+      * torch.distributed.algorithms.ddp_comm_hooks.powerSGD_hook
+      * torch.distributed.algorithms.join
+      * torch.distributed.autograd
+      * torch.distributed.checkpoint.default_planner
+      * torch.distributed.checkpoint.filesystem
+      * torch.distributed.checkpoint.planner
+      * torch.distributed.checkpoint.state_dict_loader
+      * torch.distributed.checkpoint.state_dict_saver
+      * torch.distributed.checkpoint.storage
+      * torch.distributed.distributed_c10d
+      * torch.distributed.elastic.agent.server.api
+      * torch.distributed.elastic.agent.server.local_elastic_agent
+      * torch.distributed.elastic.events
+        * torch.distributed.elastic.events.api
+        * torch.distributed.elastic.events.handlers
+      * torch.distributed.elastic.metrics.api
+      * torch.distributed.elastic.multiprocessing
+        * torch.distributed.elastic.multiprocessing.api
+        * torch.distributed.elastic.multiprocessing.errors
+          * torch.distributed.elastic.multiprocessing.errors.error_handler
+      * torch.distributed.elastic.rendezvous.api
+      * torch.distributed.elastic.rendezvous.c10d_rendezvous_backend
+      * torch.distributed.elastic.rendezvous.dynamic_rendezvous
+      * torch.distributed.elastic.rendezvous.etcd_rendezvous
+      * torch.distributed.elastic.rendezvous.etcd_rendezvous_backend
+      * torch.distributed.elastic.rendezvous.etcd_server
+      * torch.distributed.elastic.rendezvous.etcd_store
+      * torch.distributed.elastic.timer.api
+      * torch.distributed.elastic.timer.file_based_local_timer
+      * torch.distributed.elastic.timer.local_timer
+      * torch.distributed.fsdp.api
+      * torch.distributed.fsdp.fully_sharded_data_parallel
+      * torch.distributed.nn.api.remote_module
+      * torch.distributed.optim.optimizer
+      * torch.distributed.optim.post_localSGD_optimizer
+      * torch.distributed.optim.zero_redundancy_optimizer
+      * torch.distributed.pipeline.sync.pipe
+      * torch.distributed.pipeline.sync.skip.skippable
+      * torch.distributed.rpc
+        * torch.distributed.rpc.api
+        * torch.distributed.rpc.backend_registry
+        * torch.distributed.rpc.functions
+        * torch.distributed.rpc.options
+      * torch.distributed.tensor.parallel.api
+      * torch.distributed.tensor.parallel.ddp
+      * torch.distributed.tensor.parallel.fsdp
+      * torch.distributed.tensor.parallel.style
+    * torch.distributions.bernoulli
+    * torch.distributions.beta
+    * torch.distributions.binomial
+    * torch.distributions.categorical
+    * torch.distributions.cauchy
+    * torch.distributions.chi2
+    * torch.distributions.constraint_registry
+    * torch.distributions.constraints
+    * torch.distributions.continuous_bernoulli
+    * torch.distributions.dirichlet
+    * torch.distributions.distribution
+    * torch.distributions.exp_family
+    * torch.distributions.exponential
+    * torch.distributions.fishersnedecor
+    * torch.distributions.gamma
+    * torch.distributions.geometric
+    * torch.distributions.gumbel
+    * torch.distributions.half_cauchy
+    * torch.distributions.half_normal
+    * torch.distributions.independent
+    * torch.distributions.kl
+    * torch.distributions.kumaraswamy
+    * torch.distributions.laplace
+    * torch.distributions.lkj_cholesky
+    * torch.distributions.log_normal
+    * torch.distributions.lowrank_multivariate_normal
+    * torch.distributions.mixture_same_family
+    * torch.distributions.multinomial
+    * torch.distributions.multivariate_normal
+    * torch.distributions.negative_binomial
+    * torch.distributions.normal
+    * torch.distributions.one_hot_categorical
+    * torch.distributions.pareto
+    * torch.distributions.poisson
+    * torch.distributions.relaxed_bernoulli
+    * torch.distributions.relaxed_categorical
+    * torch.distributions.studentT
+    * torch.distributions.transformed_distribution
+    * torch.distributions.transforms
+    * torch.distributions.uniform
+    * torch.distributions.utils
+    * torch.distributions.von_mises
+    * torch.distributions.weibull
+    * torch.distributions.wishart
+    * torch.export
+    * torch.func
+    * torch.functional
+    * torch.futures
+    * torch.fx._symbolic_trace
+    * torch.fx.graph
+    * torch.fx.graph_module
+    * torch.fx.interpreter
+    * torch.fx.node
+    * torch.fx.proxy
+    * torch.fx.subgraph_rewriter
+    * torch.hub
+    * torch.jit
+      * torch.jit._async
+      * torch.jit._freeze
+      * torch.jit._fuser
+      * torch.jit._script
+      * torch.jit._serialization
+      * torch.jit._trace
+    * torch.library
+    * torch.monitor
+    * torch.mps
+      * torch.mps.event
+      * torch.mps.profiler
+    * torch.multiprocessing
+      * torch.multiprocessing.spawn
+    * torch.nested
+    * torch.nn.functional
+    * torch.nn.init
+    * torch.nn.modules.activation
+    * torch.nn.modules.adaptive
+    * torch.nn.modules.batchnorm
+    * torch.nn.modules.channelshuffle
+    * torch.nn.modules.container
+    * torch.nn.modules.conv
+    * torch.nn.modules.distance
+    * torch.nn.modules.dropout
+    * torch.nn.modules.flatten
+    * torch.nn.modules.fold
+    * torch.nn.modules.instancenorm
+    * torch.nn.modules.lazy
+    * torch.nn.modules.linear
+    * torch.nn.modules.loss
+    * torch.nn.modules.module
+    * torch.nn.modules.normalization
+    * torch.nn.modules.padding
+    * torch.nn.modules.pixelshuffle
+    * torch.nn.modules.pooling
+    * torch.nn.modules.rnn
+    * torch.nn.modules.sparse
+    * torch.nn.modules.transformer
+    * torch.nn.modules.upsampling
+    * torch.nn.parallel.comm
+    * torch.nn.parallel.data_parallel
+    * torch.nn.parallel.distributed
+    * torch.nn.parameter
+    * torch.nn.utils.clip_grad
+    * torch.nn.utils.convert_parameters
+    * torch.nn.utils.init
+    * torch.nn.utils.parametrizations
+    * torch.nn.utils.parametrize
+    * torch.nn.utils.prune
+    * torch.nn.utils.rnn
+    * torch.nn.utils.spectral_norm
+    * torch.nn.utils.stateless
+    * torch.nn.utils.weight_norm
+    * torch.onnx
+      * torch.onnx._internal.exporter
+      * torch.onnx._type_utils
+      * torch.onnx.utils
+      * torch.onnx.verification
+    * torch.optim.adadelta
+    * torch.optim.adagrad
+    * torch.optim.adam
+    * torch.optim.adamax
+    * torch.optim.adamw
+    * torch.optim.asgd
+    * torch.optim.lbfgs
+    * torch.optim.lr_scheduler
+    * torch.optim.nadam
+    * torch.optim.optimizer
+    * torch.optim.radam
+    * torch.optim.rmsprop
+    * torch.optim.rprop
+    * torch.optim.sgd
+    * torch.optim.sparse_adam
+    * torch.overrides
+    * torch.package.file_structure_representation
+    * torch.package.package_exporter
+    * torch.package.package_importer
+    * torch.profiler.itt
+    * torch.profiler.profiler
+    * torch.quasirandom
+    * torch.random
+    * torch.serialization
+    * torch.signal.windows.windows
+    * torch.sparse
+    * torch.storage
+    * torch.testing._comparison
+    * torch.testing._creation
+    * torch.utils
+      * torch.utils.backend_registration
+      * torch.utils.benchmark.utils.common
+      * torch.utils.benchmark.utils.timer
+      * torch.utils.benchmark.utils.valgrind_wrapper.timer_interface
+      * torch.utils.checkpoint
+      * torch.utils.cpp_backtrace
+      * torch.utils.cpp_extension
+      * torch.utils.data._utils.collate
+      * torch.utils.data._utils.worker
+      * torch.utils.data.dataloader
+      * torch.utils.data.dataset
+      * torch.utils.data.distributed
+      * torch.utils.data.sampler
+      * torch.utils.dlpack
+      * torch.utils.mobile_optimizer
+      * torch.utils.tensorboard.writer
+  * typing
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

@@ -1,0 +1,754 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * Serialization semantics
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# Serialization semantics¶
+
+This note describes how you can save and load PyTorch tensors and module
+states in Python, and how to serialize Python modules so they can be loaded in
+C++.
+
+Table of Contents
+
+  * Serialization semantics
+
+    * Saving and loading tensors
+
+    * Saving and loading tensors preserves views
+
+    * Saving and loading torch.nn.Modules
+
+    * Serializing torch.nn.Modules and loading them in C++
+
+    * Saving and loading ScriptModules across PyTorch versions
+
+      * torch.div performing integer division
+
+      * torch.full always inferring a float dtype
+
+    * Utility functions
+
+## Saving and loading tensors¶
+
+`torch.save()` and `torch.load()` let you easily save and load tensors:
+
+    
+    
+    >>> t = torch.tensor([1., 2.])
+    >>> torch.save(t, 'tensor.pt')
+    >>> torch.load('tensor.pt')
+    tensor([1., 2.])
+    
+
+By convention, PyTorch files are typically written with a ‘.pt’ or ‘.pth’
+extension.
+
+`torch.save()` and `torch.load()` use Python’s pickle by default, so you can
+also save multiple tensors as part of Python objects like tuples, lists, and
+dicts:
+
+    
+    
+    >>> d = {'a': torch.tensor([1., 2.]), 'b': torch.tensor([3., 4.])}
+    >>> torch.save(d, 'tensor_dict.pt')
+    >>> torch.load('tensor_dict.pt')
+    {'a': tensor([1., 2.]), 'b': tensor([3., 4.])}
+    
+
+Custom data structures that include PyTorch tensors can also be saved if the
+data structure is pickle-able.
+
+## Saving and loading tensors preserves views¶
+
+Saving tensors preserves their view relationships:
+
+    
+    
+    >>> numbers = torch.arange(1, 10)
+    >>> evens = numbers[1::2]
+    >>> torch.save([numbers, evens], 'tensors.pt')
+    >>> loaded_numbers, loaded_evens = torch.load('tensors.pt')
+    >>> loaded_evens *= 2
+    >>> loaded_numbers
+    tensor([ 1,  4,  3,  8,  5, 12,  7, 16,  9])
+    
+
+Behind the scenes, these tensors share the same “storage.” See Tensor Views
+for more on views and storage.
+
+When PyTorch saves tensors it saves their storage objects and tensor metadata
+separately. This is an implementation detail that may change in the future,
+but it typically saves space and lets PyTorch easily reconstruct the view
+relationships between the loaded tensors. In the above snippet, for example,
+only a single storage is written to ‘tensors.pt’.
+
+In some cases, however, saving the current storage objects may be unnecessary
+and create prohibitively large files. In the following snippet a storage much
+larger than the saved tensor is written to a file:
+
+    
+    
+    >>> large = torch.arange(1, 1000)
+    >>> small = large[0:5]
+    >>> torch.save(small, 'small.pt')
+    >>> loaded_small = torch.load('small.pt')
+    >>> loaded_small.storage().size()
+    999
+    
+
+Instead of saving only the five values in the small tensor to ‘small.pt,’ the
+999 values in the storage it shares with large were saved and loaded.
+
+When saving tensors with fewer elements than their storage objects, the size
+of the saved file can be reduced by first cloning the tensors. Cloning a
+tensor produces a new tensor with a new storage object containing only the
+values in the tensor:
+
+    
+    
+    >>> large = torch.arange(1, 1000)
+    >>> small = large[0:5]
+    >>> torch.save(small.clone(), 'small.pt')  # saves a clone of small
+    >>> loaded_small = torch.load('small.pt')
+    >>> loaded_small.storage().size()
+    5
+    
+
+Since the cloned tensors are independent of each other, however, they have
+none of the view relationships the original tensors did. If both file size and
+view relationships are important when saving tensors smaller than their
+storage objects, then care must be taken to construct new tensors that
+minimize the size of their storage objects but still have the desired view
+relationships before saving.
+
+## Saving and loading torch.nn.Modules¶
+
+See also: Tutorial: Saving and loading modules
+
+In PyTorch, a module’s state is frequently serialized using a ‘state dict.’ A
+module’s state dict contains all of its parameters and persistent buffers:
+
+    
+    
+    >>> bn = torch.nn.BatchNorm1d(3, track_running_stats=True)
+    >>> list(bn.named_parameters())
+    [('weight', Parameter containing: tensor([1., 1., 1.], requires_grad=True)),
+     ('bias', Parameter containing: tensor([0., 0., 0.], requires_grad=True))]
+    
+    >>> list(bn.named_buffers())
+    [('running_mean', tensor([0., 0., 0.])),
+     ('running_var', tensor([1., 1., 1.])),
+     ('num_batches_tracked', tensor(0))]
+    
+    >>> bn.state_dict()
+    OrderedDict([('weight', tensor([1., 1., 1.])),
+                 ('bias', tensor([0., 0., 0.])),
+                 ('running_mean', tensor([0., 0., 0.])),
+                 ('running_var', tensor([1., 1., 1.])),
+                 ('num_batches_tracked', tensor(0))])
+    
+
+Instead of saving a module directly, for compatibility reasons it is
+recommended to instead save only its state dict. Python modules even have a
+function, `load_state_dict()`, to restore their states from a state dict:
+
+    
+    
+    >>> torch.save(bn.state_dict(), 'bn.pt')
+    >>> bn_state_dict = torch.load('bn.pt')
+    >>> new_bn = torch.nn.BatchNorm1d(3, track_running_stats=True)
+    >>> new_bn.load_state_dict(bn_state_dict)
+    <All keys matched successfully>
+    
+
+Note that the state dict is first loaded from its file with `torch.load()` and
+the state then restored with `load_state_dict()`.
+
+Even custom modules and modules containing other modules have state dicts and
+can use this pattern:
+
+    
+    
+    # A module with two linear layers
+    >>> class MyModule(torch.nn.Module):
+          def __init__(self):
+            super().__init__()
+            self.l0 = torch.nn.Linear(4, 2)
+            self.l1 = torch.nn.Linear(2, 1)
+    
+          def forward(self, input):
+            out0 = self.l0(input)
+            out0_relu = torch.nn.functional.relu(out0)
+            return self.l1(out0_relu)
+    
+    >>> m = MyModule()
+    >>> m.state_dict()
+    OrderedDict([('l0.weight', tensor([[ 0.1400, 0.4563, -0.0271, -0.4406],
+                                       [-0.3289, 0.2827, 0.4588, 0.2031]])),
+                 ('l0.bias', tensor([ 0.0300, -0.1316])),
+                 ('l1.weight', tensor([[0.6533, 0.3413]])),
+                 ('l1.bias', tensor([-0.1112]))])
+    
+    >>> torch.save(m.state_dict(), 'mymodule.pt')
+    >>> m_state_dict = torch.load('mymodule.pt')
+    >>> new_m = MyModule()
+    >>> new_m.load_state_dict(m_state_dict)
+    <All keys matched successfully>
+    
+
+## Serializing torch.nn.Modules and loading them in C++¶
+
+See also: Tutorial: Loading a TorchScript Model in C++
+
+ScriptModules can be serialized as a TorchScript program and loaded using
+`torch.jit.load()`. This serialization encodes all the modules’ methods,
+submodules, parameters, and attributes, and it allows the serialized program
+to be loaded in C++ (i.e. without Python).
+
+The distinction between `torch.jit.save()` and `torch.save()` may not be
+immediately clear. `torch.save()` saves Python objects with pickle. This is
+especially useful for prototyping, researching, and training.
+`torch.jit.save()`, on the other hand, serializes ScriptModules to a format
+that can be loaded in Python or C++. This is useful when saving and loading
+C++ modules or for running modules trained in Python with C++, a common
+practice when deploying PyTorch models.
+
+To script, serialize and load a module in Python:
+
+    
+    
+    >>> scripted_module = torch.jit.script(MyModule())
+    >>> torch.jit.save(scripted_module, 'mymodule.pt')
+    >>> torch.jit.load('mymodule.pt')
+    RecursiveScriptModule( original_name=MyModule
+                          (l0): RecursiveScriptModule(original_name=Linear)
+                          (l1): RecursiveScriptModule(original_name=Linear) )
+    
+
+Traced modules can also be saved with `torch.jit.save()`, with the caveat that
+only the traced code path is serialized. The following example demonstrates
+this:
+
+    
+    
+    # A module with control flow
+    >>> class ControlFlowModule(torch.nn.Module):
+          def __init__(self):
+            super().__init__()
+            self.l0 = torch.nn.Linear(4, 2)
+            self.l1 = torch.nn.Linear(2, 1)
+    
+          def forward(self, input):
+            if input.dim() > 1:
+                return torch.tensor(0)
+    
+            out0 = self.l0(input)
+            out0_relu = torch.nn.functional.relu(out0)
+            return self.l1(out0_relu)
+    
+    >>> traced_module = torch.jit.trace(ControlFlowModule(), torch.randn(4))
+    >>> torch.jit.save(traced_module, 'controlflowmodule_traced.pt')
+    >>> loaded = torch.jit.load('controlflowmodule_traced.pt')
+    >>> loaded(torch.randn(2, 4)))
+    tensor([[-0.1571], [-0.3793]], grad_fn=<AddBackward0>)
+    
+    >>> scripted_module = torch.jit.script(ControlFlowModule(), torch.randn(4))
+    >>> torch.jit.save(scripted_module, 'controlflowmodule_scripted.pt')
+    >>> loaded = torch.jit.load('controlflowmodule_scripted.pt')
+    >> loaded(torch.randn(2, 4))
+    tensor(0)
+    
+
+The above module has an if statement that is not triggered by the traced
+inputs, and so is not part of the traced module and not serialized with it.
+The scripted module, however, contains the if statement and is serialized with
+it. See the TorchScript documentation for more on scripting and tracing.
+
+Finally, to load the module in C++:
+
+    
+    
+    >>> torch::jit::script::Module module;
+    >>> module = torch::jit::load('controlflowmodule_scripted.pt');
+    
+
+See the PyTorch C++ API documentation for details about how to use PyTorch
+modules in C++.
+
+## Saving and loading ScriptModules across PyTorch versions¶
+
+The PyTorch Team recommends saving and loading modules with the same version
+of PyTorch. Older versions of PyTorch may not support newer modules, and newer
+versions may have removed or modified older behavior. These changes are
+explicitly described in PyTorch’s release notes, and modules relying on
+functionality that has changed may need to be updated to continue working
+properly. In limited cases, detailed below, PyTorch will preserve the historic
+behavior of serialized ScriptModules so they do not require an update.
+
+### torch.div performing integer division¶
+
+In PyTorch 1.5 and earlier `torch.div()` would perform floor division when
+given two integer inputs:
+
+    
+    
+    # PyTorch 1.5 (and earlier)
+    >>> a = torch.tensor(5)
+    >>> b = torch.tensor(3)
+    >>> a / b
+    tensor(1)
+    
+
+In PyTorch 1.7, however, `torch.div()` will always perform a true division of
+its inputs, just like division in Python 3:
+
+    
+    
+    # PyTorch 1.7
+    >>> a = torch.tensor(5)
+    >>> b = torch.tensor(3)
+    >>> a / b
+    tensor(1.6667)
+    
+
+The behavior of `torch.div()` is preserved in serialized ScriptModules. That
+is, ScriptModules serialized with versions of PyTorch before 1.6 will continue
+to see `torch.div()` perform floor division when given two integer inputs even
+when loaded with newer versions of PyTorch. ScriptModules using `torch.div()`
+and serialized on PyTorch 1.6 and later cannot be loaded in earlier versions
+of PyTorch, however, since those earlier versions do not understand the new
+behavior.
+
+### torch.full always inferring a float dtype¶
+
+In PyTorch 1.5 and earlier `torch.full()` always returned a float tensor,
+regardless of the fill value it’s given:
+
+    
+    
+    # PyTorch 1.5 and earlier
+    >>> torch.full((3,), 1)  # Note the integer fill value...
+    tensor([1., 1., 1.])     # ...but float tensor!
+    
+
+In PyTorch 1.7, however, `torch.full()` will infer the returned tensor’s dtype
+from the fill value:
+
+    
+    
+    # PyTorch 1.7
+    >>> torch.full((3,), 1)
+    tensor([1, 1, 1])
+    
+    >>> torch.full((3,), True)
+    tensor([True, True, True])
+    
+    >>> torch.full((3,), 1.)
+    tensor([1., 1., 1.])
+    
+    >>> torch.full((3,), 1 + 1j)
+    tensor([1.+1.j, 1.+1.j, 1.+1.j])
+    
+
+The behavior of `torch.full()` is preserved in serialized ScriptModules. That
+is, ScriptModules serialized with versions of PyTorch before 1.6 will continue
+to see torch.full return float tensors by default, even when given bool or
+integer fill values. ScriptModules using `torch.full()` and serialized on
+PyTorch 1.6 and later cannot be loaded in earlier versions of PyTorch,
+however, since those earlier versions do not understand the new behavior.
+
+## Utility functions¶
+
+The following utility functions are related to serialization:
+
+torch.serialization.register_package( _priority_ , _tagger_ , _deserializer_
+)[source]¶
+
+    
+
+Registers callables for tagging and deserializing storage objects with an
+associated priority. Tagging associates a device with a storage object at save
+time while deserializing moves a storage object to an appropriate device at
+load time. `tagger` and `deserializer` are run in the order given by their
+`priority` until a tagger/deserializer returns a value that is not None.
+
+To override the deserialization behavior for a device in the global registry,
+one can register a tagger with a higher priority than the existing tagger.
+
+This function can also be used to register a tagger and deserializer for new
+devices.
+
+Parameters
+
+    
+
+  * **priority** ( _int_) – Indicates the priority associated with the tagger and deserializer, where a lower value indicates higher priority.
+
+  * **tagger** ( _Callable_ _[_ _[_ _Union_ _[_ _Storage_ _,_ _TypedStorage_ _,_ _UntypedStorage_ _]_ _]_ _,_ _Optional_ _[_ _str_ _]_ _]_ ) – Callable that takes in a storage object and returns its tagged device as a string or None.
+
+  * **deserializer** ( _Callable_ _[_ _[_ _Union_ _[_ _Storage_ _,_ _TypedStorage_ _,_ _UntypedStorage_ _]_ _,_ _str_ _]_ _,_ _Optional_ _[_ _Union_ _[_ _Storage_ _,_ _TypedStorage_ _,_ _UntypedStorage_ _]_ _]_ _]_ ) – Callable that takes in storage object and a device string and returns a storage object on the appropriate device or None.
+
+Returns
+
+    
+
+None
+
+Example
+
+    
+    
+    >>> def ipu_tag(obj):
+    >>>     if obj.device.type == 'ipu':
+    >>>         return 'ipu'
+    >>> def ipu_deserialize(obj, location):
+    >>>     if location.startswith('ipu'):
+    >>>         ipu = getattr(torch, "ipu", None)
+    >>>         assert ipu is not None, "IPU device module is not loaded"
+    >>>         assert torch.ipu.is_available(), "ipu is not available"
+    >>>         return obj.ipu(location)
+    >>> torch.serialization.register_package(11, ipu_tag, ipu_deserialize)
+    
+
+torch.serialization.get_default_load_endianness()[source]¶
+
+    
+
+Get fallback byte order for loading files
+
+If byteorder mark is not present in saved checkpoint, this byte order is used
+as fallback. By default, it’s “native” byte order.
+
+Returns
+
+    
+
+Optional[LoadEndianness]
+
+Return type
+
+    
+
+default_load_endian
+
+torch.serialization.set_default_load_endianness( _endianness_ )[source]¶
+
+    
+
+Set fallback byte order for loading files
+
+If byteorder mark is not present in saved checkpoint, this byte order is used
+as fallback. By default, it’s “native” byte order.
+
+Parameters
+
+    
+
+**endianness** – the new fallback byte order
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * Serialization semantics
+    * Saving and loading tensors
+    * Saving and loading tensors preserves views
+    * Saving and loading torch.nn.Modules
+    * Serializing torch.nn.Modules and loading them in C++
+    * Saving and loading ScriptModules across PyTorch versions
+      * torch.div performing integer division
+      * torch.full always inferring a float dtype
+    * Utility functions
+      * `register_package()`
+      * `get_default_load_endianness()`
+      * `set_default_load_endianness()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

@@ -1,0 +1,394 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * LayerNorm
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# LayerNorm¶
+
+_class _torch.nn.LayerNorm( _normalized_shape_ , _eps =1e-05_,
+_elementwise_affine =True_, _bias =True_, _device =None_, _dtype
+=None_)[source]¶
+
+    
+
+Applies Layer Normalization over a mini-batch of inputs as described in the
+paper Layer Normalization
+
+y=x−E[x]Var[x]+ϵ∗γ+βy = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] +
+\epsilon}} * \gamma + \beta y=Var[x]+ϵ​x−E[x]​∗γ+β
+
+The mean and standard-deviation are calculated over the last D dimensions,
+where D is the dimension of `normalized_shape`. For example, if
+`normalized_shape` is `(3, 5)` (a 2-dimensional shape), the mean and standard-
+deviation are computed over the last 2 dimensions of the input (i.e.
+`input.mean((-2, -1))`). γ\gammaγ and β\betaβ are learnable affine transform
+parameters of `normalized_shape` if `elementwise_affine` is `True`. The
+standard-deviation is calculated via the biased estimator, equivalent to
+torch.var(input, unbiased=False).
+
+Note
+
+Unlike Batch Normalization and Instance Normalization, which applies scalar
+scale and bias for each entire channel/plane with the `affine` option, Layer
+Normalization applies per-element scale and bias with `elementwise_affine`.
+
+This layer uses statistics computed from input data in both training and
+evaluation modes.
+
+Parameters
+
+    
+
+  * **normalized_shape** ( _int_ _or_ _list_ _or_ _torch.Size_ ) – 
+
+input shape from an expected input of size
+
+[∗×normalized_shape[0]×normalized_shape[1]×…×normalized_shape[−1]][* \times
+\text{normalized\\_shape}[0] \times \text{normalized\\_shape}[1] \times \ldots
+\times \text{normalized\\_shape}[-1]]
+[∗×normalized_shape[0]×normalized_shape[1]×…×normalized_shape[−1]]
+
+If a single integer is used, it is treated as a singleton list, and this
+module will normalize over the last dimension which is expected to be of that
+specific size.
+
+  * **eps** ( _float_) – a value added to the denominator for numerical stability. Default: 1e-5
+
+  * **elementwise_affine** ( _bool_) – a boolean value that when set to `True`, this module has learnable per-element affine parameters initialized to ones (for weights) and zeros (for biases). Default: `True`.
+
+  * **bias** ( _bool_) – If set to `False`, the layer will not learn an additive bias (only relevant if `elementwise_affine` is `True`). Default: `True`.
+
+Variables
+
+    
+
+  * **weight** – the learnable weights of the module of shape normalized_shape\text{normalized\\_shape}normalized_shape when `elementwise_affine` is set to `True`. The values are initialized to 1.
+
+  * **bias** – the learnable bias of the module of shape normalized_shape\text{normalized\\_shape}normalized_shape when `elementwise_affine` is set to `True`. The values are initialized to 0.
+
+Shape:
+
+    
+
+  * Input: (N,∗)(N, *)(N,∗)
+
+  * Output: (N,∗)(N, *)(N,∗) (same shape as input)
+
+Examples:
+
+    
+    
+    >>> # NLP Example
+    >>> batch, sentence_length, embedding_dim = 20, 5, 10
+    >>> embedding = torch.randn(batch, sentence_length, embedding_dim)
+    >>> layer_norm = nn.LayerNorm(embedding_dim)
+    >>> # Activate module
+    >>> layer_norm(embedding)
+    >>>
+    >>> # Image Example
+    >>> N, C, H, W = 20, 5, 10, 10
+    >>> input = torch.randn(N, C, H, W)
+    >>> # Normalize over the last three dimensions (i.e. the channel and spatial dimensions)
+    >>> # as shown in the image below
+    >>> layer_norm = nn.LayerNorm([C, H, W])
+    >>> output = layer_norm(input)
+    
+
+![../_images/layer_norm.jpg](../_images/layer_norm.jpg)
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * LayerNorm
+    * `LayerNorm`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

@@ -1,0 +1,378 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.div
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.div¶
+
+torch.div( _input_ , _other_ , _*_ , _rounding_mode =None_, _out =None_) ->
+Tensor¶
+
+    
+
+Divides each element of the input `input` by the corresponding element of
+`other`.
+
+outi=inputiotheri\text{out}_i = \frac{\text{input}_i}{\text{other}_i}
+outi​=otheri​inputi​​
+
+Note
+
+By default, this performs a “true” division like Python 3. See the
+`rounding_mode` argument for floor division.
+
+Supports broadcasting to a common shape, type promotion, and integer, float,
+and complex inputs. Always promotes integer types to the default scalar type.
+
+Parameters
+
+    
+
+  * **input** ( _Tensor_) – the dividend
+
+  * **other** ( _Tensor_ _or_ _Number_ ) – the divisor
+
+Keyword Arguments
+
+    
+
+  * **rounding_mode** ( _str_ _,_ _optional_ ) – 
+
+Type of rounding applied to the result:
+
+    * None - default behavior. Performs no rounding and, if both `input` and `other` are integer types, promotes the inputs to the default scalar type. Equivalent to true division in Python (the `/` operator) and NumPy’s `np.true_divide`.
+
+    * `"trunc"` \- rounds the results of the division towards zero. Equivalent to C-style integer division.
+
+    * `"floor"` \- rounds the results of the division down. Equivalent to floor division in Python (the `//` operator) and NumPy’s `np.floor_divide`.
+
+  * **out** ( _Tensor_ _,_ _optional_ ) – the output tensor.
+
+Examples:
+
+    
+    
+    >>> x = torch.tensor([ 0.3810,  1.2774, -0.2972, -0.3719,  0.4637])
+    >>> torch.div(x, 0.5)
+    tensor([ 0.7620,  2.5548, -0.5944, -0.7438,  0.9274])
+    
+    >>> a = torch.tensor([[-0.3711, -1.9353, -0.4605, -0.2917],
+    ...                   [ 0.1815, -1.0111,  0.9805, -1.5923],
+    ...                   [ 0.1062,  1.4581,  0.7759, -1.2344],
+    ...                   [-0.1830, -0.0313,  1.1908, -1.4757]])
+    >>> b = torch.tensor([ 0.8032,  0.2930, -0.8113, -0.2308])
+    >>> torch.div(a, b)
+    tensor([[-0.4620, -6.6051,  0.5676,  1.2639],
+            [ 0.2260, -3.4509, -1.2086,  6.8990],
+            [ 0.1322,  4.9764, -0.9564,  5.3484],
+            [-0.2278, -0.1068, -1.4678,  6.3938]])
+    
+    >>> torch.div(a, b, rounding_mode='trunc')
+    tensor([[-0., -6.,  0.,  1.],
+            [ 0., -3., -1.,  6.],
+            [ 0.,  4., -0.,  5.],
+            [-0., -0., -1.,  6.]])
+    
+    >>> torch.div(a, b, rounding_mode='floor')
+    tensor([[-1., -7.,  0.,  1.],
+            [ 0., -4., -2.,  6.],
+            [ 0.,  4., -1.,  5.],
+            [-1., -1., -2.,  6.]])
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.div
+    * `div()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

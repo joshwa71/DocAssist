@@ -1,0 +1,401 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.linalg >
+  * torch.linalg.matrix_rank
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.linalg.matrix_rank¶
+
+torch.linalg.matrix_rank( _A_ , _*_ , _atol =None_, _rtol =None_, _hermitian
+=False_, _out =None_) -> Tensor¶
+
+    
+
+Computes the numerical rank of a matrix.
+
+The matrix rank is computed as the number of singular values (or eigenvalues
+in absolute value when `hermitian`= True) that are greater than
+max⁡(atol,σ1∗rtol)\max(\text{atol}, \sigma_1 * \text{rtol})max(atol,σ1​∗rtol)
+threshold, where σ1\sigma_1σ1​ is the largest singular value (or eigenvalue).
+
+Supports input of float, double, cfloat and cdouble dtypes. Also supports
+batches of matrices, and if `A` is a batch of matrices then the output has the
+same batch dimensions.
+
+If `hermitian`= True, `A` is assumed to be Hermitian if complex or symmetric
+if real, but this is not checked internally. Instead, just the lower
+triangular part of the matrix is used in the computations.
+
+If `rtol` is not specified and `A` is a matrix of dimensions (m, n), the
+relative tolerance is set to be rtol=max⁡(m,n)ε\text{rtol} = \max(m, n)
+\varepsilonrtol=max(m,n)ε and ε\varepsilonε is the epsilon value for the dtype
+of `A` (see `finfo`). If `rtol` is not specified and `atol` is specified to be
+larger than zero then `rtol` is set to zero.
+
+If `atol` or `rtol` is a `torch.Tensor`, its shape must be broadcastable to
+that of the singular values of `A` as returned by `torch.linalg.svdvals()`.
+
+Note
+
+This function has NumPy compatible variant linalg.matrix_rank(A, tol,
+hermitian=False). However, use of the positional argument `tol` is deprecated
+in favor of `atol` and `rtol`.
+
+Note
+
+The matrix rank is computed using a singular value decomposition
+`torch.linalg.svdvals()` if `hermitian`= False (default) and the eigenvalue
+decomposition `torch.linalg.eigvalsh()` when `hermitian`= True. When inputs
+are on a CUDA device, this function synchronizes that device with the CPU.
+
+Parameters
+
+    
+
+  * **A** ( _Tensor_) – tensor of shape (*, m, n) where * is zero or more batch dimensions.
+
+  * **tol** ( _float_ _,_ _Tensor_ _,_ _optional_ ) – [NumPy Compat] Alias for `atol`. Default: None.
+
+Keyword Arguments
+
+    
+
+  * **atol** ( _float_ _,_ _Tensor_ _,_ _optional_ ) – the absolute tolerance value. When None it’s considered to be zero. Default: None.
+
+  * **rtol** ( _float_ _,_ _Tensor_ _,_ _optional_ ) – the relative tolerance value. See above for the value it takes when None. Default: None.
+
+  * **hermitian** ( _bool_) – indicates whether `A` is Hermitian if complex or symmetric if real. Default: False.
+
+  * **out** ( _Tensor_ _,_ _optional_ ) – output tensor. Ignored if None. Default: None.
+
+Examples:
+
+    
+    
+    >>> A = torch.eye(10)
+    >>> torch.linalg.matrix_rank(A)
+    tensor(10)
+    >>> B = torch.eye(10)
+    >>> B[0, 0] = 0
+    >>> torch.linalg.matrix_rank(B)
+    tensor(9)
+    
+    >>> A = torch.randn(4, 3, 2)
+    >>> torch.linalg.matrix_rank(A)
+    tensor([2, 2, 2, 2])
+    
+    >>> A = torch.randn(2, 4, 2, 3)
+    >>> torch.linalg.matrix_rank(A)
+    tensor([[2, 2, 2, 2],
+            [2, 2, 2, 2]])
+    
+    >>> A = torch.randn(2, 4, 3, 3, dtype=torch.complex64)
+    >>> torch.linalg.matrix_rank(A)
+    tensor([[3, 3, 3, 3],
+            [3, 3, 3, 3]])
+    >>> torch.linalg.matrix_rank(A, hermitian=True)
+    tensor([[3, 3, 3, 3],
+            [3, 3, 3, 3]])
+    >>> torch.linalg.matrix_rank(A, atol=1.0, rtol=0.0)
+    tensor([[3, 2, 2, 2],
+            [1, 2, 1, 2]])
+    >>> torch.linalg.matrix_rank(A, atol=1.0, rtol=0.0, hermitian=True)
+    tensor([[2, 2, 2, 1],
+            [1, 2, 2, 2]])
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.linalg.matrix_rank
+    * `matrix_rank()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

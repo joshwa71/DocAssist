@@ -1,0 +1,3 @@
+Run: !wget -r A.html -P *save_directory* --include *specified_web_directory** *documentation_url* 
+e.g. for pytorch docs:
+    !wget -r A.html -P pytorch-docs --include /docs/stable/* https://pytorch.org/docs/stable/ 

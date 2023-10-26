@@ -1,0 +1,439 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * BasePruningMethod
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# BasePruningMethod¶
+
+_class _torch.nn.utils.prune.BasePruningMethod[source]¶
+
+    
+
+Abstract base class for creation of new pruning techniques.
+
+Provides a skeleton for customization requiring the overriding of methods such
+as `compute_mask()` and `apply()`.
+
+_classmethod _apply( _module_ , _name_ , _* args_, _importance_scores =None_,
+_** kwargs_)[source]¶
+
+    
+
+Adds the forward pre-hook that enables pruning on the fly and the
+reparametrization of a tensor in terms of the original tensor and the pruning
+mask.
+
+Parameters
+
+    
+
+  * **module** ( _nn.Module_) – module containing the tensor to prune
+
+  * **name** ( _str_) – parameter name within `module` on which pruning will act.
+
+  * **args** – arguments passed on to a subclass of `BasePruningMethod`
+
+  * **importance_scores** ( _torch.Tensor_) – tensor of importance scores (of same shape as module parameter) used to compute mask for pruning. The values in this tensor indicate the importance of the corresponding elements in the parameter being pruned. If unspecified or None, the parameter will be used in its place.
+
+  * **kwargs** – keyword arguments passed on to a subclass of a `BasePruningMethod`
+
+apply_mask( _module_ )[source]¶
+
+    
+
+Simply handles the multiplication between the parameter being pruned and the
+generated mask. Fetches the mask and the original tensor from the module and
+returns the pruned version of the tensor.
+
+Parameters
+
+    
+
+**module** ( _nn.Module_) – module containing the tensor to prune
+
+Returns
+
+    
+
+pruned version of the input tensor
+
+Return type
+
+    
+
+pruned_tensor (torch.Tensor)
+
+_abstract _compute_mask( _t_ , _default_mask_ )[source]¶
+
+    
+
+Computes and returns a mask for the input tensor `t`. Starting from a base
+`default_mask` (which should be a mask of ones if the tensor has not been
+pruned yet), generate a random mask to apply on top of the `default_mask`
+according to the specific pruning method recipe.
+
+Parameters
+
+    
+
+  * **t** ( _torch.Tensor_) – tensor representing the importance scores of the
+
+  * **prune.** ( _parameter to_ ) – 
+
+  * **default_mask** ( _torch.Tensor_) – Base mask from previous pruning
+
+  * **iterations** – 
+
+  * **is** ( _that need to be respected after the new mask_ ) – 
+
+  * **t.** ( _applied. Same dims as_ ) – 
+
+Returns
+
+    
+
+mask to apply to `t`, of same dims as `t`
+
+Return type
+
+    
+
+mask (torch.Tensor)
+
+prune( _t_ , _default_mask =None_, _importance_scores =None_)[source]¶
+
+    
+
+Computes and returns a pruned version of input tensor `t` according to the
+pruning rule specified in `compute_mask()`.
+
+Parameters
+
+    
+
+  * **t** ( _torch.Tensor_) – tensor to prune (of same dimensions as `default_mask`).
+
+  * **importance_scores** ( _torch.Tensor_) – tensor of importance scores (of same shape as `t`) used to compute mask for pruning `t`. The values in this tensor indicate the importance of the corresponding elements in the `t` that is being pruned. If unspecified or None, the tensor `t` will be used in its place.
+
+  * **default_mask** ( _torch.Tensor_ _,_ _optional_ ) – mask from previous pruning iteration, if any. To be considered when determining what portion of the tensor that pruning should act on. If None, default to a mask of ones.
+
+Returns
+
+    
+
+pruned version of tensor `t`.
+
+remove( _module_ )[source]¶
+
+    
+
+Removes the pruning reparameterization from a module. The pruned parameter
+named `name` remains permanently pruned, and the parameter named
+`name+'_orig'` is removed from the parameter list. Similarly, the buffer named
+`name+'_mask'` is removed from the buffers.
+
+Note
+
+Pruning itself is NOT undone or reversed!
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * BasePruningMethod
+    * `BasePruningMethod`
+      * `BasePruningMethod.apply()`
+      * `BasePruningMethod.apply_mask()`
+      * `BasePruningMethod.compute_mask()`
+      * `BasePruningMethod.prune()`
+      * `BasePruningMethod.remove()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

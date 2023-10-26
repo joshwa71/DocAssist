@@ -1,0 +1,385 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * GaussianNLLLoss
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# GaussianNLLLoss¶
+
+_class _torch.nn.GaussianNLLLoss( _*_ , _full =False_, _eps =1e-06_,
+_reduction ='mean'_)[source]¶
+
+    
+
+Gaussian negative log likelihood loss.
+
+The targets are treated as samples from Gaussian distributions with
+expectations and variances predicted by the neural network. For a `target`
+tensor modelled as having Gaussian distribution with a tensor of expectations
+`input` and a tensor of positive variances `var` the loss is:
+
+loss=12(log⁡(max(var, eps))+(input−target)2max(var, eps))+const.\text{loss} =
+\frac{1}{2}\left(\log\left(\text{max}\left(\text{var}, \
+\text{eps}\right)\right) + \frac{\left(\text{input} - \text{target}\right)^2}
+{\text{max}\left(\text{var}, \ \text{eps}\right)}\right) + \text{const.}
+loss=21​(log(max(var, eps))+max(var, eps)(input−target)2​)+const.
+
+where `eps` is used for stability. By default, the constant term of the loss
+function is omitted unless `full` is `True`. If `var` is not the same size as
+`input` (due to a homoscedastic assumption), it must either have a final
+dimension of 1 or have one fewer dimension (with all other sizes being the
+same) for correct broadcasting.
+
+Parameters
+
+    
+
+  * **full** ( _bool_ _,_ _optional_ ) – include the constant term in the loss calculation. Default: `False`.
+
+  * **eps** ( _float_ _,_ _optional_ ) – value used to clamp `var` (see note below), for stability. Default: 1e-6.
+
+  * **reduction** ( _str_ _,_ _optional_ ) – specifies the reduction to apply to the output:`'none'` | `'mean'` | `'sum'`. `'none'`: no reduction will be applied, `'mean'`: the output is the average of all batch member losses, `'sum'`: the output is the sum of all batch member losses. Default: `'mean'`.
+
+Shape:
+
+    
+
+  * Input: (N,∗)(N, *)(N,∗) or (∗)(*)(∗) where ∗*∗ means any number of additional dimensions
+
+  * Target: (N,∗)(N, *)(N,∗) or (∗)(*)(∗), same shape as the input, or same shape as the input but with one dimension equal to 1 (to allow for broadcasting)
+
+  * Var: (N,∗)(N, *)(N,∗) or (∗)(*)(∗), same shape as the input, or same shape as the input but with one dimension equal to 1, or same shape as the input but with one fewer dimension (to allow for broadcasting)
+
+  * Output: scalar if `reduction` is `'mean'` (default) or `'sum'`. If `reduction` is `'none'`, then (N,∗)(N, *)(N,∗), same shape as the input
+
+Examples::
+
+    
+    
+    
+    >>> loss = nn.GaussianNLLLoss()
+    >>> input = torch.randn(5, 2, requires_grad=True)
+    >>> target = torch.randn(5, 2)
+    >>> var = torch.ones(5, 2, requires_grad=True)  # heteroscedastic
+    >>> output = loss(input, target, var)
+    >>> output.backward()
+    
+    
+    
+    >>> loss = nn.GaussianNLLLoss()
+    >>> input = torch.randn(5, 2, requires_grad=True)
+    >>> target = torch.randn(5, 2)
+    >>> var = torch.ones(5, 1, requires_grad=True)  # homoscedastic
+    >>> output = loss(input, target, var)
+    >>> output.backward()
+    
+
+Note
+
+The clamping of `var` is ignored with respect to autograd, and so the
+gradients are unaffected by it.
+
+Reference:
+
+    
+
+Nix, D. A. and Weigend, A. S., “Estimating the mean and variance of the target
+probability distribution”, Proceedings of 1994 IEEE International Conference
+on Neural Networks (ICNN’94), Orlando, FL, USA, 1994, pp. 55-60 vol.1, doi:
+10.1109/ICNN.1994.374138.
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * GaussianNLLLoss
+    * `GaussianNLLLoss`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

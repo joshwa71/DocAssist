@@ -1,0 +1,424 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch._logging >
+  * torch._logging.set_logs
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch._logging.set_logs¶
+
+torch._logging.set_logs( _*_ , _all =None_, _dynamo =None_, _aot =None_,
+_dynamic =None_, _inductor =None_, _distributed =None_, _onnx =None_,
+_bytecode =False_, _aot_graphs =False_, _aot_joint_graph =False_, _ddp_graphs
+=False_, _graph =False_, _graph_code =False_, _graph_breaks =False_,
+_graph_sizes =False_, _guards =False_, _recompiles =False_, _trace_source
+=False_, _trace_call =False_, _output_code =False_, _schedule =False_,
+_perf_hints =False_, _onnx_diagnostics =False_, _modules =None_)[source]¶
+
+    
+
+Sets the log level for individual components and toggles individual log
+artifact types.
+
+Warning
+
+This feature is a prototype and may have compatibility breaking changes in the
+future.
+
+Note
+
+The `TORCH_LOGS` environment variable has complete precedence over this
+function, so if it was set, this function does nothing.
+
+A component is a set of related features in PyTorch. All of the log messages
+emitted from a given component have their own log levels. If the log level of
+a particular message has priority greater than or equal to its component’s log
+level setting, it is emitted. Otherwise, it is supressed. This allows you to,
+for instance, silence large groups of log messages that are not relevant to
+you and increase verbosity of logs for components that are relevant. The
+expected log level values, ordered from highest to lowest priority, are:
+
+>   * `logging.CRITICAL`
+>
+>   * `logging.ERROR`
+>
+>   * `logging.WARNING`
+>
+>   * `logging.INFO`
+>
+>   * `logging.DEBUG`
+>
+>   * `logging.NOTSET`
+>
+>
+
+See documentation for the Python `logging` module for more information on log
+levels: https://docs.python.org/3/library/logging.html#logging-levels
+
+An artifact is a particular type of log message. Each artifact is assigned to
+a parent component. A component can emit many different kinds of artifacts. In
+general, an artifact is emitted if either its corresponding setting in the
+argument list below is turned on or if its parent component is set to a log
+level less than or equal to the log level of the artifact.
+
+Keyword Arguments
+
+    
+
+  * **all** (`Optional[int]`) – The default log level for all components. Default: `logging.WARN`
+
+  * **dynamo** (`Optional[int]`) – The log level for the TorchDynamo component. Default: `logging.WARN`
+
+  * **aot** (`Optional[int]`) – The log level for the AOTAutograd component. Default: `logging.WARN`
+
+  * **inductor** (`Optional[int]`) – The log level for the TorchInductor component. Default: `logging.WARN`
+
+  * **dynamic** (`Optional[int]`) – The log level for dynamic shapes. Default: `logging.WARN`
+
+  * **distributed** (`Optional[int]`) – Whether to log communication operations and other debug info from pytorch distributed components. Default: `logging.WARN`
+
+  * **onnx** (`Optional[int]`) – The log level for the ONNX exporter component. Default: `logging.WARN`
+
+  * **bytecode** (`bool`) – Whether to emit the original and generated bytecode from TorchDynamo. Default: `False`
+
+  * **aot_graphs** (`bool`) – Whether to emit the graphs generated by AOTAutograd. Default: `False`
+
+  * **aot_joint_graph** (`bool`) – Whether to emit the joint forward-backward graph generated by AOTAutograd. Default: `False`
+
+  * **ddp_graphs** (`bool`) – Whether to emit graphs generated by DDPOptimizer. Default: `False`
+
+  * **graph** (`bool`) – Whether to emit the graph captured by TorchDynamo in tabular format. Default: `False`
+
+  * **graph_code** (`bool`) – Whether to emit the python source of the graph captured by TorchDynamo. Default: `False`
+
+  * **graph_breaks** (`bool`) – Whether to emit the graph breaks encountered by TorchDynamo. Default: `False`
+
+  * **graph_sizes** (`bool`) – Whether to emit tensor sizes of the graph captured by TorchDynamo. Default: `False`
+
+  * **guards** (`bool`) – Whether to emit the guards generated by TorchDynamo for each compiled function. Default: `False`
+
+  * **recompiles** (`bool`) – Whether to emit a guard failure reason and message every time TorchDynamo recompiles a function. Default: `False`
+
+  * **trace_source** (`bool`) – Whether to emit when TorchDynamo begins tracing a new line. Default: `False`
+
+  * **trace_call** (`bool`) – Whether to emit detailed line location when TorchDynamo creates an FX node corresponding to function call. Python 3.11+ only. Default: `False`
+
+  * **output_code** (`bool`) – Whether to emit the TorchInductor output code. Default: `False`
+
+  * **schedule** (`bool`) – Whether to emit the TorchInductor schedule. Default: `False`
+
+  * **perf_hints** (`bool`) – Whether to emit the TorchInductor perf hints. Default: `False`
+
+  * **onnx_diagnostics** (`bool`) – Whether to emit the ONNX exporter diagnostics in logging. Default: `False`
+
+  * **modules** ( _dict_) – This argument provides an alternate way to specify the above log component and artifact settings, in the format of a keyword args dictionary given as a single argument. There are two cases where this is useful (1) if a new log component or artifact has been registered but a keyword argument for it has not been added to this function and (2) if the log level for an unregistered module needs to be set. This can be done by providing the fully-qualified module name as the key, with the log level as the value. Default: `None`
+
+Example:
+
+    
+    
+    >>> import logging
+    
+    # The following changes the "dynamo" component to emit DEBUG-level
+    # logs, and to emit "graph_code" artifacts.
+    
+    >>> torch._logging.set_logs(dynamo=logging.DEBUG, graph_code=True)
+    
+    # The following enables the logs for a different module
+    
+    >>> torch._logging.set_logs(modules={"unregistered.module.name": logging.DEBUG})
+    
+
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch._logging.set_logs
+    * `set_logs()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

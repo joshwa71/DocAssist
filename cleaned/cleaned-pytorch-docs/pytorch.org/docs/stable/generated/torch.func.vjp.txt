@@ -1,0 +1,423 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.func >
+  * torch.func API Reference >
+  * torch.func.vjp
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.func.vjp¶
+
+torch.func.vjp( _func_ , _* primals_, _has_aux =False_)¶
+
+    
+
+Standing for the vector-Jacobian product, returns a tuple containing the
+results of `func` applied to `primals` and a function that, when given
+`cotangents`, computes the reverse-mode Jacobian of `func` with respect to
+`primals` times `cotangents`.
+
+Parameters
+
+    
+
+  * **func** ( _Callable_ ) – A Python function that takes one or more arguments. Must return one or more Tensors.
+
+  * **primals** ( _Tensors_ ) – Positional arguments to `func` that must all be Tensors. The returned function will also be computing the derivative with respect to these arguments
+
+  * **has_aux** ( _bool_) – Flag indicating that `func` returns a `(output, aux)` tuple where the first element is the output of the function to be differentiated and the second element is other auxiliary objects that will not be differentiated. Default: False.
+
+Returns
+
+    
+
+Returns a `(output, vjp_fn)` tuple containing the output of `func` applied to
+`primals` and a function that computes the vjp of `func` with respect to all
+`primals` using the cotangents passed to the returned function. If `has_aux is
+True`, then instead returns a `(output, vjp_fn, aux)` tuple. The returned
+`vjp_fn` function will return a tuple of each VJP.
+
+When used in simple cases, `vjp()` behaves the same as `grad()`
+
+    
+    
+    >>> x = torch.randn([5])
+    >>> f = lambda x: x.sin().sum()
+    >>> (_, vjpfunc) = torch.func.vjp(f, x)
+    >>> grad = vjpfunc(torch.tensor(1.))[0]
+    >>> assert torch.allclose(grad, torch.func.grad(f)(x))
+    
+
+However, `vjp()` can support functions with multiple outputs by passing in the
+cotangents for each of the outputs
+
+    
+    
+    >>> x = torch.randn([5])
+    >>> f = lambda x: (x.sin(), x.cos())
+    >>> (_, vjpfunc) = torch.func.vjp(f, x)
+    >>> vjps = vjpfunc((torch.ones([5]), torch.ones([5])))
+    >>> assert torch.allclose(vjps[0], x.cos() + -x.sin())
+    
+
+`vjp()` can even support outputs being Python structs
+
+    
+    
+    >>> x = torch.randn([5])
+    >>> f = lambda x: {'first': x.sin(), 'second': x.cos()}
+    >>> (_, vjpfunc) = torch.func.vjp(f, x)
+    >>> cotangents = {'first': torch.ones([5]), 'second': torch.ones([5])}
+    >>> vjps = vjpfunc(cotangents)
+    >>> assert torch.allclose(vjps[0], x.cos() + -x.sin())
+    
+
+The function returned by `vjp()` will compute the partials with respect to
+each of the `primals`
+
+    
+    
+    >>> x, y = torch.randn([5, 4]), torch.randn([4, 5])
+    >>> (_, vjpfunc) = torch.func.vjp(torch.matmul, x, y)
+    >>> cotangents = torch.randn([5, 5])
+    >>> vjps = vjpfunc(cotangents)
+    >>> assert len(vjps) == 2
+    >>> assert torch.allclose(vjps[0], torch.matmul(cotangents, y.transpose(0, 1)))
+    >>> assert torch.allclose(vjps[1], torch.matmul(x.transpose(0, 1), cotangents))
+    
+
+`primals` are the positional arguments for `f`. All kwargs use their default
+value
+
+    
+    
+    >>> x = torch.randn([5])
+    >>> def f(x, scale=4.):
+    >>>   return x * scale
+    >>>
+    >>> (_, vjpfunc) = torch.func.vjp(f, x)
+    >>> vjps = vjpfunc(torch.ones_like(x))
+    >>> assert torch.allclose(vjps[0], torch.full(x.shape, 4.))
+    
+
+Note
+
+Using PyTorch `torch.no_grad` together with `vjp`. Case 1: Using
+`torch.no_grad` inside a function:
+
+    
+    
+    >>> def f(x):
+    >>>     with torch.no_grad():
+    >>>         c = x ** 2
+    >>>     return x - c
+    
+
+In this case, `vjp(f)(x)` will respect the inner `torch.no_grad`.
+
+Case 2: Using `vjp` inside `torch.no_grad` context manager:
+
+    
+    
+    >>> with torch.no_grad():
+    >>>     vjp(f)(x)
+    
+
+In this case, `vjp` will respect the inner `torch.no_grad`, but not the outer
+one. This is because `vjp` is a “function transform”: its result should not
+depend on the result of a context manager outside of `f`.
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.func.vjp
+    * `vjp()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

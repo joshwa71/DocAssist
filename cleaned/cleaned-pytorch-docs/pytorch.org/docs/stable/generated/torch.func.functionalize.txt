@@ -1,0 +1,458 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.func >
+  * torch.func API Reference >
+  * torch.func.functionalize
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.func.functionalize¶
+
+torch.func.functionalize( _func_ , _*_ , _remove ='mutations'_)¶
+
+    
+
+functionalize is a transform that can be used to remove (intermediate)
+mutations and aliasing from a function, while preserving the function’s
+semantics.
+
+`functionalize(func)` returns a new function with the same semantics as
+`func`, but with all intermediate mutations removed. Every inplace operation
+performed on an intermediate tensor: `intermediate.foo_()` gets replaced by
+its out-of-place equivalent: `intermediate_updated = intermediate.foo()`.
+
+functionalize is useful for shipping a pytorch program off to backends or
+compilers that aren’t able to easily represent mutations or aliasing
+operators.
+
+Parameters
+
+    
+
+  * **func** ( _Callable_ ) – A Python function that takes one or more arguments.
+
+  * **remove** ( _str_) – An optional string argument, that takes on either the value ‘mutations’ or ‘mutations_and_views’. If ‘mutations’ is passed in then all mutating operators will be replaced with their non-mutating equivalents. If ‘mutations_and_views’ is passed in, then additionally, all aliasing operators will be replaced with their non-aliasing equivalents. Default: ‘mutations’.
+
+Returns
+
+    
+
+Returns a new “functionalized” function. It takes the same inputs as `func`,
+and has the same behavior, but any mutations (and optionally aliasing)
+performed on intermeidate tensors in the function will be removed.
+
+Return type
+
+    
+
+_Callable_
+
+functionalize will also remove mutations (and views) that were performed on
+function inputs. However to preserve semantics, functionalize will “fix up”
+the mutations after the transform has finished running, by detecting if any
+tensor inputs “should have” been mutated, and copying the new data back to the
+inputs if necessary.
+
+Example:
+
+    
+    
+    >>> import torch
+    >>> from torch.fx.experimental.proxy_tensor import make_fx
+    >>> from torch.func import functionalize
+    >>>
+    >>> # A function that uses mutations and views, but only on intermediate tensors.
+    >>> def f(a):
+    ...     b = a + 1
+    ...     c = b.view(-1)
+    ...     c.add_(1)
+    ...     return b
+    ...
+    >>> inpt = torch.randn(2)
+    >>>
+    >>> out1 = f(inpt)
+    >>> out2 = functionalize(f)(inpt)
+    >>>
+    >>> # semantics are the same (outputs are equivalent)
+    >>> print(torch.allclose(out1, out2))
+    True
+    >>>
+    >>> f_traced = make_fx(f)(inpt)
+    >>> f_no_mutations_traced = make_fx(functionalize(f))(inpt)
+    >>> f_no_mutations_and_views_traced = make_fx(functionalize(f, remove='mutations_and_views'))(inpt)
+    >>>
+    >>> print(f_traced.code)
+    
+    
+    
+    def forward(self, a_1):
+        add = torch.ops.aten.add(a_1, 1);  a_1 = None
+        view = torch.ops.aten.view(add, [-1])
+        add_ = torch.ops.aten.add_(view, 1);  view = None
+        return add
+    
+    >>> print(f_no_mutations_traced.code)
+    
+    
+    
+    def forward(self, a_1):
+        add = torch.ops.aten.add(a_1, 1);  a_1 = None
+        view = torch.ops.aten.view(add, [-1]);  add = None
+        add_1 = torch.ops.aten.add(view, 1);  view = None
+        view_1 = torch.ops.aten.view(add_1, [2]);  add_1 = None
+        return view_1
+    
+    >>> print(f_no_mutations_and_views_traced.code)
+    
+    
+    
+    def forward(self, a_1):
+        add = torch.ops.aten.add(a_1, 1);  a_1 = None
+        view_copy = torch.ops.aten.view_copy(add, [-1]);  add = None
+        add_1 = torch.ops.aten.add(view_copy, 1);  view_copy = None
+        view_copy_1 = torch.ops.aten.view_copy(add_1, [2]);  add_1 = None
+        return view_copy_1
+    
+    
+    >>> # A function that mutates its input tensor
+    >>> def f(a):
+    ...     b = a.view(-1)
+    ...     b.add_(1)
+    ...     return a
+    ...
+    >>> f_no_mutations_and_views_traced = make_fx(functionalize(f, remove='mutations_and_views'))(inpt)
+    >>> #
+    >>> # All mutations and views have been removed,
+    >>> # but there is an extra copy_ in the graph to correctly apply the mutation to the input
+    >>> # after the function has completed.
+    >>> print(f_no_mutations_and_views_traced.code)
+    
+    
+    
+    def forward(self, a_1):
+        view_copy = torch.ops.aten.view_copy(a_1, [-1])
+        add = torch.ops.aten.add(view_copy, 1);  view_copy = None
+        view_copy_1 = torch.ops.aten.view_copy(add, [2]);  add = None
+        copy_ = torch.ops.aten.copy_(a_1, view_copy_1);  a_1 = None
+        return view_copy_1
+    
+
+There are a few “failure modes” for functionalize that are worth calling out:
+
+    
+
+  1. Like other torch.func transforms, functionalize() doesn’t work with functions that directly use .backward(). The same is true for torch.autograd.grad. If you want to use autograd, you can compute gradients directly with functionalize(grad(f)).
+
+  2. Like other torch.func transforms, functionalize() doesn’t work with global state. If you call functionalize(f) on a function that takes views / mutations of non-local state, functionalization will simply no-op and pass the view/mutation calls directly to the backend. One way to work around this is is to ensure that any non-local state creation is wrapped into a larger function, which you then call functionalize on.
+
+  3. resize_() has some limitations: functionalize will only work on programs that use resize_()` as long as the tensor being resized is not a view.
+
+  4. as_strided() has some limitations: functionalize will not work on as_strided() calls that result in tensors with overlapping memory.
+
+Finally, a helpful mental model for understanding functionalization is that
+most user pytorch programs are writting with the public torch API. When
+executed, torch operators are generally decomposed into our internal C++
+“ATen” API. The logic for functionalization happens entirely at the level of
+ATen. Functionalization knows how to take every aliasing operator in ATen, and
+map it to its non-aliasing equivalent (e.g. `tensor.view({-1})` ->
+`at::view_copy(tensor, {-1})`), and how to take every mutating operator in
+ATen, and map it to its non-mutating equivalent (e.g. `tensor.add_(1)` ->
+`at::add(tensor, -1)`), while tracking aliases and mutations out-of-line to
+know when to fix things up. Information about which ATen operators are
+aliasing or mutating all comes from
+https://github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/native_functions.yaml.
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.func.functionalize
+    * `functionalize()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

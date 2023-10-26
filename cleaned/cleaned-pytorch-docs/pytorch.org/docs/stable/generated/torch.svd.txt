@@ -1,0 +1,458 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch >
+  * torch.svd
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# torch.svd¶
+
+torch.svd( _input_ , _some =True_, _compute_uv =True_, _*_ , _out =None_)¶
+
+    
+
+Computes the singular value decomposition of either a matrix or batch of
+matrices `input`. The singular value decomposition is represented as a
+namedtuple (U, S, V), such that `input` =Udiag(S)VH= U \text{diag}(S)
+V^{\text{H}}=Udiag(S)VH. where VHV^{\text{H}}VH is the transpose of V for real
+inputs, and the conjugate transpose of V for complex inputs. If `input` is a
+batch of matrices, then U, S, and V are also batched with the same batch
+dimensions as `input`.
+
+If `some` is True (default), the method returns the reduced singular value
+decomposition. In this case, if the last two dimensions of `input` are m and
+n, then the returned U and V matrices will contain only min(n, m) orthonormal
+columns.
+
+If `compute_uv` is False, the returned U and V will be zero-filled matrices of
+shape (m, m) and (n, n) respectively, and the same device as `input`. The
+argument `some` has no effect when `compute_uv` is False.
+
+Supports `input` of float, double, cfloat and cdouble data types. The dtypes
+of U and V are the same as `input`’s. S will always be real-valued, even if
+`input` is complex.
+
+Warning
+
+`torch.svd()` is deprecated in favor of `torch.linalg.svd()` and will be
+removed in a future PyTorch release.
+
+`U, S, V = torch.svd(A, some=some, compute_uv=True)` (default) should be
+replaced with
+
+    
+    
+    U, S, Vh = torch.linalg.svd(A, full_matrices=not some)
+    V = Vh.mH
+    
+
+`_, S, _ = torch.svd(A, some=some, compute_uv=False)` should be replaced with
+
+    
+    
+    S = torch.linalg.svdvals(A)
+    
+
+Note
+
+Differences with `torch.linalg.svd()`:
+
+  * `some` is the opposite of `torch.linalg.svd()`’s `full_matrices`. Note that default value for both is True, so the default behavior is effectively the opposite.
+
+  * `torch.svd()` returns V, whereas `torch.linalg.svd()` returns Vh, that is, VHV^{\text{H}}VH.
+
+  * If `compute_uv` is False, `torch.svd()` returns zero-filled tensors for U and Vh, whereas `torch.linalg.svd()` returns empty tensors.
+
+Note
+
+The singular values are returned in descending order. If `input` is a batch of
+matrices, then the singular values of each matrix in the batch are returned in
+descending order.
+
+Note
+
+The S tensor can only be used to compute gradients if `compute_uv` is True.
+
+Note
+
+When `some` is False, the gradients on U[…, :, min(m, n):] and V[…, :, min(m,
+n):] will be ignored in the backward pass, as those vectors can be arbitrary
+bases of the corresponding subspaces.
+
+Note
+
+The implementation of `torch.linalg.svd()` on CPU uses LAPACK’s routine ?gesdd
+(a divide-and-conquer algorithm) instead of ?gesvd for speed. Analogously, on
+GPU, it uses cuSOLVER’s routines gesvdj and gesvdjBatched on CUDA 10.1.243 and
+later, and MAGMA’s routine gesdd on earlier versions of CUDA.
+
+Note
+
+The returned U will not be contiguous. The matrix (or batch of matrices) will
+be represented as a column-major matrix (i.e. Fortran-contiguous).
+
+Warning
+
+The gradients with respect to U and V will only be finite when the input does
+not have zero nor repeated singular values.
+
+Warning
+
+If the distance between any two singular values is close to zero, the
+gradients with respect to U and V will be numerically unstable, as they
+depends on 1min⁡i≠jσi2−σj2\frac{1}{\min_{i \neq j} \sigma_i^2 -
+\sigma_j^2}mini=j​σi2​−σj2​1​. The same happens when the matrix has small
+singular values, as these gradients also depend on S⁻¹.
+
+Warning
+
+For complex-valued `input` the singular value decomposition is not unique, as
+U and V may be multiplied by an arbitrary phase factor eiϕe^{i \phi}eiϕ on
+every column. The same happens when `input` has repeated singular values,
+where one may multiply the columns of the spanning subspace in U and V by a
+rotation matrix and the resulting vectors will span the same subspace.
+Different platforms, like NumPy, or inputs on different device types, may
+produce different U and V tensors.
+
+Parameters
+
+    
+
+  * **input** ( _Tensor_) – the input tensor of size (*, m, n) where * is zero or more batch dimensions consisting of (m, n) matrices.
+
+  * **some** ( _bool_ _,_ _optional_ ) – controls whether to compute the reduced or full decomposition, and consequently, the shape of returned U and V. Default: True.
+
+  * **compute_uv** ( _bool_ _,_ _optional_ ) – controls whether to compute U and V. Default: True.
+
+Keyword Arguments
+
+    
+
+**out** ( _tuple_ _,_ _optional_ ) – the output tuple of tensors
+
+Example:
+
+    
+    
+    >>> a = torch.randn(5, 3)
+    >>> a
+    tensor([[ 0.2364, -0.7752,  0.6372],
+            [ 1.7201,  0.7394, -0.0504],
+            [-0.3371, -1.0584,  0.5296],
+            [ 0.3550, -0.4022,  1.5569],
+            [ 0.2445, -0.0158,  1.1414]])
+    >>> u, s, v = torch.svd(a)
+    >>> u
+    tensor([[ 0.4027,  0.0287,  0.5434],
+            [-0.1946,  0.8833,  0.3679],
+            [ 0.4296, -0.2890,  0.5261],
+            [ 0.6604,  0.2717, -0.2618],
+            [ 0.4234,  0.2481, -0.4733]])
+    >>> s
+    tensor([2.3289, 2.0315, 0.7806])
+    >>> v
+    tensor([[-0.0199,  0.8766,  0.4809],
+            [-0.5080,  0.4054, -0.7600],
+            [ 0.8611,  0.2594, -0.4373]])
+    >>> torch.dist(a, torch.mm(torch.mm(u, torch.diag(s)), v.t()))
+    tensor(8.6531e-07)
+    >>> a_big = torch.randn(7, 5, 3)
+    >>> u, s, v = torch.svd(a_big)
+    >>> torch.dist(a_big, torch.matmul(torch.matmul(u, torch.diag_embed(s)), v.mT))
+    tensor(2.6503e-06)
+    
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * torch.svd
+    * `svd()`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+

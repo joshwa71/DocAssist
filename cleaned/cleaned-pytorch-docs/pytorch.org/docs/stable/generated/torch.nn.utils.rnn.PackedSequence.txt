@@ -1,0 +1,420 @@
+
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+
+PyTorch
+
+torchaudio
+
+torchtext
+
+torchvision
+
+torcharrow
+
+TorchData
+
+TorchRec
+
+TorchServe
+
+TorchX
+
+PyTorch on XLA Devices
+
+  * Resources 
+
+About
+
+Learn about PyTorch’s features and capabilities
+
+PyTorch Foundation
+
+Learn about the PyTorch foundation
+
+Community
+
+Join the PyTorch developer community to contribute, learn, and get your
+questions answered.
+
+Community Stories
+
+Learn how our community solves real, everyday machine learning problems with
+PyTorch.
+
+Developer Resources
+
+Find resources and get questions answered
+
+Events
+
+Find events, webinars, and podcasts
+
+Forums
+
+A place to discuss PyTorch code, issues, install, research
+
+Models (Beta)
+
+Discover, publish, and reuse pre-trained models
+
+  * GitHub
+
+Table of Contents
+
+2.1 ▼
+
+Community
+
+  * PyTorch Governance | Build + CI
+  * PyTorch Contribution Guide
+  * PyTorch Design Philosophy
+  * PyTorch Governance | Mechanics
+  * PyTorch Governance | Maintainers
+
+Developer Notes
+
+  * CUDA Automatic Mixed Precision examples
+  * Autograd mechanics
+  * Broadcasting semantics
+  * CPU threading and TorchScript inference
+  * CUDA semantics
+  * Distributed Data Parallel
+  * Extending PyTorch
+  * Extending torch.func with autograd.Function
+  * Frequently Asked Questions
+  * Gradcheck mechanics
+  * HIP (ROCm) semantics
+  * Features for large-scale deployments
+  * Modules
+  * MPS backend
+  * Multiprocessing best practices
+  * Numerical accuracy
+  * Reproducibility
+  * Serialization semantics
+  * Windows FAQ
+
+Language Bindings
+
+  * C++
+  * Javadoc
+  * torch::deploy
+
+Python API
+
+  * torch
+  * torch.nn
+  * torch.nn.functional
+  * torch.Tensor
+  * Tensor Attributes
+  * Tensor Views
+  * torch.amp
+  * torch.autograd
+  * torch.library
+  * torch.cpu
+  * torch.cuda
+  * Understanding CUDA Memory Usage
+  * Generating a Snapshot
+  * Using the visualizer
+  * Snapshot API Reference
+  * torch.mps
+  * torch.backends
+  * torch.export
+  * torch.distributed
+  * torch.distributed.algorithms.join
+  * torch.distributed.elastic
+  * torch.distributed.fsdp
+  * torch.distributed.optim
+  * torch.distributed.tensor.parallel
+  * torch.distributed.checkpoint
+  * torch.distributions
+  * torch.compiler
+  * torch.fft
+  * torch.func
+  * torch.futures
+  * torch.fx
+  * torch.hub
+  * torch.jit
+  * torch.linalg
+  * torch.monitor
+  * torch.signal
+  * torch.special
+  * torch.overrides
+  * torch.package
+  * torch.profiler
+  * torch.nn.init
+  * torch.onnx
+  * torch.optim
+  * Complex Numbers
+  * DDP Communication Hooks
+  * Pipeline Parallelism
+  * Quantization
+  * Distributed RPC Framework
+  * torch.random
+  * torch.masked
+  * torch.nested
+  * torch.sparse
+  * torch.Storage
+  * torch.testing
+  * torch.utils
+  * torch.utils.benchmark
+  * torch.utils.bottleneck
+  * torch.utils.checkpoint
+  * torch.utils.cpp_extension
+  * torch.utils.data
+  * torch.utils.jit
+  * torch.utils.dlpack
+  * torch.utils.mobile_optimizer
+  * torch.utils.model_zoo
+  * torch.utils.tensorboard
+  * Type Info
+  * Named Tensors
+  * Named Tensors operator coverage
+  * torch.__config__
+  * torch._logging
+
+Libraries
+
+  * torchaudio
+  * TorchData
+  * TorchRec
+  * TorchServe
+  * torchtext
+  * torchvision
+  * PyTorch on XLA Devices
+
+  * Docs  >
+  * torch.nn >
+  * PackedSequence
+  * ![](../_static/images/view-page-source-icon.svg)
+
+Shortcuts
+
+# PackedSequence¶
+
+_class _torch.nn.utils.rnn.PackedSequence( _data_ , _batch_sizes =None_,
+_sorted_indices =None_, _unsorted_indices =None_)[source]¶
+
+    
+
+Holds the data and list of `batch_sizes` of a packed sequence.
+
+All RNN modules accept packed sequences as inputs.
+
+Note
+
+Instances of this class should never be created manually. They are meant to be
+instantiated by functions like `pack_padded_sequence()`.
+
+Batch sizes represent the number elements at each sequence step in the batch,
+not the varying sequence lengths passed to `pack_padded_sequence()`. For
+instance, given data `abc` and `x` the `PackedSequence` would contain data
+`axbc` with `batch_sizes=[2,1,1]`.
+
+Variables
+
+    
+
+  * **data** ( _Tensor_) – Tensor containing packed sequence
+
+  * **batch_sizes** ( _Tensor_) – Tensor of integers holding information about the batch size at each sequence step
+
+  * **sorted_indices** ( _Tensor_ _,_ _optional_ ) – Tensor of integers holding how this `PackedSequence` is constructed from sequences.
+
+  * **unsorted_indices** ( _Tensor_ _,_ _optional_ ) – Tensor of integers holding how this to recover the original sequences with correct order.
+
+Note
+
+`data` can be on arbitrary device and of arbitrary dtype. `sorted_indices` and
+`unsorted_indices` must be `torch.int64` tensors on the same device as `data`.
+
+However, `batch_sizes` should always be a CPU `torch.int64` tensor.
+
+This invariant is maintained throughout `PackedSequence` class, and all
+functions that construct a :class:PackedSequence in PyTorch (i.e., they only
+pass in tensors conforming to this constraint).
+
+batch_sizes _: Tensor_¶
+
+    
+
+Alias for field number 1
+
+count( _value_ , _/_ )¶
+
+    
+
+Return number of occurrences of value.
+
+data _: Tensor_¶
+
+    
+
+Alias for field number 0
+
+index( _value_ , _start =0_, _stop =9223372036854775807_, _/_ )¶
+
+    
+
+Return first index of value.
+
+Raises ValueError if the value is not present.
+
+_property _is_cuda¶
+
+    
+
+Returns true if self.data stored on a gpu
+
+is_pinned()[source]¶
+
+    
+
+Returns true if self.data stored on in pinned memory
+
+sorted_indices _: Optional[Tensor]_¶
+
+    
+
+Alias for field number 2
+
+to( _* args_, _** kwargs_)[source]¶
+
+    
+
+Performs dtype and/or device conversion on self.data.
+
+It has similar signature as `torch.Tensor.to()`, except optional arguments
+like non_blocking and copy should be passed as kwargs, not args, or they will
+not apply to the index tensors.
+
+Note
+
+If the `self.data` Tensor already has the correct `torch.dtype` and
+`torch.device`, then `self` is returned. Otherwise, returns a copy with the
+desired configuration.
+
+unsorted_indices _: Optional[Tensor]_¶
+
+    
+
+Alias for field number 3
+
+Next ![](../_static/images/chevron-right-orange.svg)
+![](../_static/images/chevron-right-orange.svg) Previous
+
+* * *
+
+(C) Copyright 2023, PyTorch Contributors.
+
+Built with Sphinx using a theme provided by Read the Docs.
+
+  * PackedSequence
+    * `PackedSequence`
+      * `PackedSequence.batch_sizes`
+      * `PackedSequence.count()`
+      * `PackedSequence.data`
+      * `PackedSequence.index()`
+      * `PackedSequence.is_cuda`
+      * `PackedSequence.is_pinned()`
+      * `PackedSequence.sorted_indices`
+      * `PackedSequence.to()`
+      * `PackedSequence.unsorted_indices`
+
+![](https://www.googleadservices.com/pagead/conversion/795629140/?label=txkmCPmdtosBENSssfsC&guid=ON&script=0)
+
+## Docs
+
+Access comprehensive developer documentation for PyTorch
+
+View Docs
+
+## Tutorials
+
+Get in-depth tutorials for beginners and advanced developers
+
+View Tutorials
+
+## Resources
+
+Find development resources and get your questions answered
+
+View Resources
+
+  * PyTorch
+  * Get Started
+  * Features
+  * Ecosystem
+  * Blog
+  * Contributing
+
+  * Resources
+  * Tutorials
+  * Docs
+  * Discuss
+  * Github Issues
+  * Brand Guidelines
+
+  * Stay up to date
+  * Facebook
+  * Twitter
+  * YouTube
+  * LinkedIn
+
+  * PyTorch Podcasts
+  * Spotify
+  * Apple
+  * Google
+  * Amazon
+
+  * Terms
+  * |
+  * Privacy
+
+© Copyright The Linux Foundation. The PyTorch Foundation is a project of The
+Linux Foundation. For web site terms of use, trademark policy and other
+policies applicable to The PyTorch Foundation please see
+www.linuxfoundation.org/policies/. The PyTorch Foundation supports the PyTorch
+open source project, which has been established as PyTorch Project a Series of
+LF Projects, LLC. For policies applicable to the PyTorch Project a Series of
+LF Projects, LLC, please see www.lfprojects.org/policies/.
+
+To analyze traffic and optimize your experience, we serve cookies on this
+site. By clicking or navigating, you agree to allow our usage of cookies. As
+the current maintainers of this site, Facebook’s Cookies Policy applies. Learn
+more, including about available controls: Cookies Policy.
+
+![](../_static/images/pytorch-x.svg)
+
+  * Get Started
+  * Ecosystem
+  * Mobile
+  * Blog
+  * Tutorials
+  * Docs 
+    * PyTorch
+    * torchaudio
+    * torchtext
+    * torchvision
+    * torcharrow
+    * TorchData
+    * TorchRec
+    * TorchServe
+    * TorchX
+    * PyTorch on XLA Devices
+  * Resources 
+    * About
+    * PyTorch Foundation
+    * Community
+    * Community Stories
+    * Developer Resources
+    * Events
+    * Forums
+    * Models (Beta)
+  * Github
+
