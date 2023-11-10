@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Documentation Chat</title>
+    <!-- Add some basic styling here or link to a CSS file -->
+</head>
+<body>
+    <div>
+        <select id="technology-select">
+            <option value="pytorch">PyTorch</option>
+            <option value="tensorflow">TensorFlow</option>
+            <!-- Add other technologies here -->
+        </select>
+    </div>
+    <div>
+        <textarea id="query-box" placeholder="Type your query here..."></textarea>
+    </div>
+    <div>
+        <button onclick="sendQuery()">Send</button>
+    </div>
+    <div id="response"></div>
+
+    <!-- Include your JavaScript here -->
+    <script>
+        function sendQuery() {
+            var technology = document.getElementById('technology-select').value;
+            var query = document.getElementById('query-box').value;
+
+            fetch('/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: query, technology: technology }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = JSON.stringify(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
